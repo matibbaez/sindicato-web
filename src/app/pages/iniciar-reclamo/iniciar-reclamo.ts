@@ -65,7 +65,7 @@ export class IniciarReclamoComponent implements OnInit {
     rol_victima: ['', Validators.required],
     
     // --- DATOS PERSONALES OPCIONALES ---
-    email: ['', [Validators.email]],
+    email: ['', [Validators.required, Validators.email]],
     domicilio_usuario: [''],
     cbu: ['', [Validators.pattern(this.cbuPattern)]], 
 
@@ -188,12 +188,14 @@ export class IniciarReclamoComponent implements OnInit {
   }
 
   avanzarAPaso2() {
-    // Validamos Nombre, DNI y Teléfono
-    if (this.f['nombre'].invalid || this.f['telefono'].invalid || this.f['dni'].invalid) {
+    // Agregamos la validación del email 👇
+    if (this.f['nombre'].invalid || this.f['telefono'].invalid || this.f['dni'].invalid || this.f['email'].invalid) {
       this.f['nombre'].markAsTouched();
       this.f['telefono'].markAsTouched();
       this.f['dni'].markAsTouched();
-      this.notificacionService.showError('Nombre, DNI y Teléfono son obligatorios.');
+      this.f['email'].markAsTouched(); // <-- Le decimos a Angular que muestre el error del email
+      
+      this.notificacionService.showError('Revisá los datos personales. Son todos obligatorios.');
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }

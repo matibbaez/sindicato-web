@@ -198,8 +198,13 @@
               </div>
 
               <div>
-                <label class="block text-sm font-medium text-slate-400 mb-1.5">Email (Opcional)</label>
-                <input type="email" formControlName="email" class="w-full bg-[#0f172a] border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500 transition-colors" placeholder="Para enviarte el seguimiento">
+                <label class="block text-sm font-medium text-slate-400 mb-1.5">Correo Electrónico <span class="text-indigo-400">*</span></label>
+                <input type="email" formControlName="email" class="w-full bg-[#0f172a] border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors" placeholder="Para enviarte el seguimiento">
+                
+                <div *ngIf="f['email'].invalid && (f['email'].dirty || f['email'].touched)" class="mt-1 text-sm text-red-400">
+                  <span *ngIf="f['email'].errors?.['required']">El email es obligatorio.</span>
+                  <span *ngIf="f['email'].errors?.['email']">El formato no es válido.</span>
+                </div>
               </div>
             </div>
           </div>
@@ -208,7 +213,7 @@
           <div class="pt-6 border-t border-white/10 flex justify-end">
             <button type="button" class="btn bg-white text-slate-950 w-full sm:w-auto hover:bg-slate-200 disabled:opacity-50 disabled:cursor-not-allowed" 
                     (click)="avanzarAPaso2()" 
-                    [disabled]="f['nombre'].invalid || f['telefono'].invalid || f['dni'].invalid">
+                    [disabled]="f['nombre'].invalid || f['telefono'].invalid || f['dni'].invalid || f['email'].invalid">
               Siguiente: Subir Documentación
               <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
             </button>
