@@ -303,15 +303,29 @@
                   </div>
                 </div>
                 <input type="file" id="fileDNI" hidden multiple (change)="onFileChange($event, 'fileDNI')" accept="image/*,application/pdf">
-                <label for="fileDNI" class="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-slate-700 rounded-xl cursor-pointer hover:border-indigo-500/50 hover:bg-white/5 transition-colors">
-                  <div *ngIf="!f['fileDNI'].value" class="flex flex-col items-center justify-center pt-5 pb-6">
-                    <svg class="w-6 h-6 text-slate-500 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" /></svg>
+                
+                <label *ngIf="getFilesList('fileDNI').length === 0" for="fileDNI" class="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-slate-700 rounded-xl cursor-pointer hover:border-indigo-500/50 hover:bg-white/5 transition-colors">
+                  <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                    <svg class="w-6 h-6 text-slate-500 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
                     <p class="text-sm text-slate-400 font-medium">Tocar para adjuntar</p>
                   </div>
-                  <div *ngIf="f['fileDNI'].value" class="text-indigo-400 font-semibold text-sm">
-                    {{ getFilesList('fileDNI').length }} archivos cargados
-                  </div>
                 </label>
+
+                <div *ngIf="getFilesList('fileDNI').length > 0" class="space-y-2 mt-2">
+                  <div *ngFor="let fileName of getFilesList('fileDNI'); let i = index" class="flex items-center justify-between bg-[#0f172a] border border-slate-800 rounded-lg p-3">
+                    <div class="flex items-center gap-3 overflow-hidden">
+                      <svg class="w-4 h-4 text-indigo-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                      <span class="text-sm text-slate-300 truncate" [title]="fileName">{{ fileName }}</span>
+                    </div>
+                    <button type="button" class="text-slate-500 hover:text-red-400 transition-colors p-1 focus:outline-none shrink-0" (click)="borrarArchivo('fileDNI', i)">
+                      <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                    </button>
+                  </div>
+                  <label *ngIf="getFilesList('fileDNI').length < 4" for="fileDNI" class="flex items-center justify-center gap-2 w-full mt-2 py-2 border border-dashed border-indigo-500/30 rounded-lg text-sm font-medium text-indigo-400 cursor-pointer hover:bg-indigo-500/10 transition-colors">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" /></svg>
+                    Agregar otro documento
+                  </label>
+                </div>
               </div>
 
               <div class="bg-white/[0.02] border border-white/10 rounded-2xl p-5 hover:bg-white/[0.04] transition-colors" *ngIf="esConductor" [ngClass]="{'border-indigo-500/50 bg-indigo-500/5': f['fileLicencia'].value}">
@@ -322,15 +336,29 @@
                   </div>
                 </div>
                 <input type="file" id="fileLicencia" hidden multiple (change)="onFileChange($event, 'fileLicencia')" accept="image/*,application/pdf">
-                <label for="fileLicencia" class="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-slate-700 rounded-xl cursor-pointer hover:border-indigo-500/50 hover:bg-white/5 transition-colors">
-                  <div *ngIf="!f['fileLicencia'].value" class="flex flex-col items-center justify-center pt-5 pb-6">
-                    <svg class="w-6 h-6 text-slate-500 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" /></svg>
+                
+                <label *ngIf="getFilesList('fileLicencia').length === 0" for="fileLicencia" class="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-slate-700 rounded-xl cursor-pointer hover:border-indigo-500/50 hover:bg-white/5 transition-colors">
+                  <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                    <svg class="w-6 h-6 text-slate-500 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
                     <p class="text-sm text-slate-400 font-medium">Tocar para adjuntar</p>
                   </div>
-                  <div *ngIf="f['fileLicencia'].value" class="text-indigo-400 font-semibold text-sm">
-                    {{ getFilesList('fileLicencia').length }} archivos cargados
-                  </div>
                 </label>
+
+                <div *ngIf="getFilesList('fileLicencia').length > 0" class="space-y-2 mt-2">
+                  <div *ngFor="let fileName of getFilesList('fileLicencia'); let i = index" class="flex items-center justify-between bg-[#0f172a] border border-slate-800 rounded-lg p-3">
+                    <div class="flex items-center gap-3 overflow-hidden">
+                      <svg class="w-4 h-4 text-indigo-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                      <span class="text-sm text-slate-300 truncate" [title]="fileName">{{ fileName }}</span>
+                    </div>
+                    <button type="button" class="text-slate-500 hover:text-red-400 transition-colors p-1 focus:outline-none shrink-0" (click)="borrarArchivo('fileLicencia', i)">
+                      <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                    </button>
+                  </div>
+                  <label *ngIf="getFilesList('fileLicencia').length < 4" for="fileLicencia" class="flex items-center justify-center gap-2 w-full mt-2 py-2 border border-dashed border-indigo-500/30 rounded-lg text-sm font-medium text-indigo-400 cursor-pointer hover:bg-indigo-500/10 transition-colors">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" /></svg>
+                    Agregar otro documento
+                  </label>
+                </div>
               </div>
 
               <div class="bg-white/[0.02] border border-white/10 rounded-2xl p-5 hover:bg-white/[0.04] transition-colors" *ngIf="esConductor" [ngClass]="{'border-indigo-500/50 bg-indigo-500/5': f['fileCedula'].value}">
@@ -341,15 +369,29 @@
                   </div>
                 </div>
                 <input type="file" id="fileCedula" hidden multiple (change)="onFileChange($event, 'fileCedula')" accept="image/*,application/pdf">
-                <label for="fileCedula" class="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-slate-700 rounded-xl cursor-pointer hover:border-indigo-500/50 hover:bg-white/5 transition-colors">
-                  <div *ngIf="!f['fileCedula'].value" class="flex flex-col items-center justify-center pt-5 pb-6">
-                    <svg class="w-6 h-6 text-slate-500 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" /></svg>
+                
+                <label *ngIf="getFilesList('fileCedula').length === 0" for="fileCedula" class="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-slate-700 rounded-xl cursor-pointer hover:border-indigo-500/50 hover:bg-white/5 transition-colors">
+                  <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                    <svg class="w-6 h-6 text-slate-500 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
                     <p class="text-sm text-slate-400 font-medium">Tocar para adjuntar</p>
                   </div>
-                  <div *ngIf="f['fileCedula'].value" class="text-indigo-400 font-semibold text-sm">
-                    {{ getFilesList('fileCedula').length }} archivos cargados
-                  </div>
                 </label>
+
+                <div *ngIf="getFilesList('fileCedula').length > 0" class="space-y-2 mt-2">
+                  <div *ngFor="let fileName of getFilesList('fileCedula'); let i = index" class="flex items-center justify-between bg-[#0f172a] border border-slate-800 rounded-lg p-3">
+                    <div class="flex items-center gap-3 overflow-hidden">
+                      <svg class="w-4 h-4 text-indigo-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                      <span class="text-sm text-slate-300 truncate" [title]="fileName">{{ fileName }}</span>
+                    </div>
+                    <button type="button" class="text-slate-500 hover:text-red-400 transition-colors p-1 focus:outline-none shrink-0" (click)="borrarArchivo('fileCedula', i)">
+                      <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                    </button>
+                  </div>
+                  <label *ngIf="getFilesList('fileCedula').length < 4" for="fileCedula" class="flex items-center justify-center gap-2 w-full mt-2 py-2 border border-dashed border-indigo-500/30 rounded-lg text-sm font-medium text-indigo-400 cursor-pointer hover:bg-indigo-500/10 transition-colors">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" /></svg>
+                    Agregar otro documento
+                  </label>
+                </div>
               </div>
 
               <div class="bg-white/[0.02] border border-white/10 rounded-2xl p-5 hover:bg-white/[0.04] transition-colors" *ngIf="esConductor && tieneSeguro" [ngClass]="{'border-indigo-500/50 bg-indigo-500/5': f['fileSeguro'].value}">
@@ -360,15 +402,29 @@
                   </div>
                 </div>
                 <input type="file" id="fileSeguro" hidden multiple (change)="onFileChange($event, 'fileSeguro')" accept="image/*,application/pdf">
-                <label for="fileSeguro" class="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-slate-700 rounded-xl cursor-pointer hover:border-indigo-500/50 hover:bg-white/5 transition-colors">
-                  <div *ngIf="!f['fileSeguro'].value" class="flex flex-col items-center justify-center pt-5 pb-6">
-                    <svg class="w-6 h-6 text-slate-500 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" /></svg>
+                
+                <label *ngIf="getFilesList('fileSeguro').length === 0" for="fileSeguro" class="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-slate-700 rounded-xl cursor-pointer hover:border-indigo-500/50 hover:bg-white/5 transition-colors">
+                  <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                    <svg class="w-6 h-6 text-slate-500 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
                     <p class="text-sm text-slate-400 font-medium">Tocar para adjuntar</p>
                   </div>
-                  <div *ngIf="f['fileSeguro'].value" class="text-indigo-400 font-semibold text-sm">
-                    {{ getFilesList('fileSeguro').length }} archivos cargados
-                  </div>
                 </label>
+
+                <div *ngIf="getFilesList('fileSeguro').length > 0" class="space-y-2 mt-2">
+                  <div *ngFor="let fileName of getFilesList('fileSeguro'); let i = index" class="flex items-center justify-between bg-[#0f172a] border border-slate-800 rounded-lg p-3">
+                    <div class="flex items-center gap-3 overflow-hidden">
+                      <svg class="w-4 h-4 text-indigo-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                      <span class="text-sm text-slate-300 truncate" [title]="fileName">{{ fileName }}</span>
+                    </div>
+                    <button type="button" class="text-slate-500 hover:text-red-400 transition-colors p-1 focus:outline-none shrink-0" (click)="borrarArchivo('fileSeguro', i)">
+                      <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                    </button>
+                  </div>
+                  <label *ngIf="getFilesList('fileSeguro').length < 4" for="fileSeguro" class="flex items-center justify-center gap-2 w-full mt-2 py-2 border border-dashed border-indigo-500/30 rounded-lg text-sm font-medium text-indigo-400 cursor-pointer hover:bg-indigo-500/10 transition-colors">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" /></svg>
+                    Agregar otro documento
+                  </label>
+                </div>
               </div>
 
               <div class="bg-white/[0.02] border border-white/10 rounded-2xl p-5 hover:bg-white/[0.04] transition-colors" *ngIf="esConductor && tieneSeguro" [ngClass]="{'border-indigo-500/50 bg-indigo-500/5': f['fileDenuncia'].value}">
@@ -379,15 +435,29 @@
                   </div>
                 </div>
                 <input type="file" id="fileDenuncia" hidden multiple (change)="onFileChange($event, 'fileDenuncia')" accept="image/*,application/pdf">
-                <label for="fileDenuncia" class="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-slate-700 rounded-xl cursor-pointer hover:border-indigo-500/50 hover:bg-white/5 transition-colors">
-                  <div *ngIf="!f['fileDenuncia'].value" class="flex flex-col items-center justify-center pt-5 pb-6">
-                    <svg class="w-6 h-6 text-slate-500 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" /></svg>
+                
+                <label *ngIf="getFilesList('fileDenuncia').length === 0" for="fileDenuncia" class="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-slate-700 rounded-xl cursor-pointer hover:border-indigo-500/50 hover:bg-white/5 transition-colors">
+                  <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                    <svg class="w-6 h-6 text-slate-500 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
                     <p class="text-sm text-slate-400 font-medium">Tocar para adjuntar</p>
                   </div>
-                  <div *ngIf="f['fileDenuncia'].value" class="text-indigo-400 font-semibold text-sm">
-                    {{ getFilesList('fileDenuncia').length }} archivos cargados
-                  </div>
                 </label>
+
+                <div *ngIf="getFilesList('fileDenuncia').length > 0" class="space-y-2 mt-2">
+                  <div *ngFor="let fileName of getFilesList('fileDenuncia'); let i = index" class="flex items-center justify-between bg-[#0f172a] border border-slate-800 rounded-lg p-3">
+                    <div class="flex items-center gap-3 overflow-hidden">
+                      <svg class="w-4 h-4 text-indigo-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                      <span class="text-sm text-slate-300 truncate" [title]="fileName">{{ fileName }}</span>
+                    </div>
+                    <button type="button" class="text-slate-500 hover:text-red-400 transition-colors p-1 focus:outline-none shrink-0" (click)="borrarArchivo('fileDenuncia', i)">
+                      <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                    </button>
+                  </div>
+                  <label *ngIf="getFilesList('fileDenuncia').length < 4" for="fileDenuncia" class="flex items-center justify-center gap-2 w-full mt-2 py-2 border border-dashed border-indigo-500/30 rounded-lg text-sm font-medium text-indigo-400 cursor-pointer hover:bg-indigo-500/10 transition-colors">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" /></svg>
+                    Agregar otro documento
+                  </label>
+                </div>
               </div>
 
               <div class="bg-white/[0.02] border border-white/10 rounded-2xl p-5 hover:bg-white/[0.04] transition-colors" *ngIf="f['rol_victima']?.value !== 'Peaton'" [ngClass]="{'border-indigo-500/50 bg-indigo-500/5': f['fileFotos'].value}">
@@ -398,15 +468,29 @@
                   </div>
                 </div>
                 <input type="file" id="fileFotos" hidden multiple (change)="onFileChange($event, 'fileFotos')">
-                <label for="fileFotos" class="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-slate-700 rounded-xl cursor-pointer hover:border-indigo-500/50 hover:bg-white/5 transition-colors">
-                  <div *ngIf="!f['fileFotos'].value" class="flex flex-col items-center justify-center pt-5 pb-6">
-                    <svg class="w-6 h-6 text-slate-500 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" /></svg>
+                
+                <label *ngIf="fotosList.length === 0" for="fileFotos" class="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-slate-700 rounded-xl cursor-pointer hover:border-indigo-500/50 hover:bg-white/5 transition-colors">
+                  <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                    <svg class="w-6 h-6 text-slate-500 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
                     <p class="text-sm text-slate-400 font-medium">Tocar para adjuntar</p>
                   </div>
-                  <div *ngIf="f['fileFotos'].value" class="text-indigo-400 font-semibold text-sm">
-                    {{ fotosList.length }} fotos cargadas
-                  </div>
                 </label>
+
+                <div *ngIf="fotosList.length > 0" class="space-y-2 mt-2">
+                  <div *ngFor="let fileName of fotosList; let i = index" class="flex items-center justify-between bg-[#0f172a] border border-slate-800 rounded-lg p-3">
+                    <div class="flex items-center gap-3 overflow-hidden">
+                      <svg class="w-4 h-4 text-indigo-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                      <span class="text-sm text-slate-300 truncate" [title]="fileName">{{ fileName }}</span>
+                    </div>
+                    <button type="button" class="text-slate-500 hover:text-red-400 transition-colors p-1 focus:outline-none shrink-0" (click)="borrarArchivo('fileFotos', i)">
+                      <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                    </button>
+                  </div>
+                  <label *ngIf="fotosList.length < 7" for="fileFotos" class="flex items-center justify-center gap-2 w-full mt-2 py-2 border border-dashed border-indigo-500/30 rounded-lg text-sm font-medium text-indigo-400 cursor-pointer hover:bg-indigo-500/10 transition-colors">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" /></svg>
+                    Agregar otra foto
+                  </label>
+                </div>
               </div>
 
               <div class="bg-white/[0.02] border border-white/10 rounded-2xl p-5 hover:bg-white/[0.04] transition-colors" *ngIf="esConductor" [ngClass]="{'border-indigo-500/50 bg-indigo-500/5': f['filePresupuesto'].value}">
@@ -417,72 +501,128 @@
                   </div>
                 </div>
                 <input type="file" id="filePresupuesto" hidden multiple (change)="onFileChange($event, 'filePresupuesto')" accept="image/*,application/pdf">
-                <label for="filePresupuesto" class="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-slate-700 rounded-xl cursor-pointer hover:border-indigo-500/50 hover:bg-white/5 transition-colors">
-                  <div *ngIf="!f['filePresupuesto'].value" class="flex flex-col items-center justify-center pt-5 pb-6">
-                    <svg class="w-6 h-6 text-slate-500 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" /></svg>
+                
+                <label *ngIf="getFilesList('filePresupuesto').length === 0" for="filePresupuesto" class="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-slate-700 rounded-xl cursor-pointer hover:border-indigo-500/50 hover:bg-white/5 transition-colors">
+                  <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                    <svg class="w-6 h-6 text-slate-500 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
                     <p class="text-sm text-slate-400 font-medium">Tocar para adjuntar</p>
                   </div>
-                  <div *ngIf="f['filePresupuesto'].value" class="text-indigo-400 font-semibold text-sm">
-                    {{ getFilesList('filePresupuesto').length }} archivos cargados
-                  </div>
                 </label>
+
+                <div *ngIf="getFilesList('filePresupuesto').length > 0" class="space-y-2 mt-2">
+                  <div *ngFor="let fileName of getFilesList('filePresupuesto'); let i = index" class="flex items-center justify-between bg-[#0f172a] border border-slate-800 rounded-lg p-3">
+                    <div class="flex items-center gap-3 overflow-hidden">
+                      <svg class="w-4 h-4 text-indigo-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                      <span class="text-sm text-slate-300 truncate" [title]="fileName">{{ fileName }}</span>
+                    </div>
+                    <button type="button" class="text-slate-500 hover:text-red-400 transition-colors p-1 focus:outline-none shrink-0" (click)="borrarArchivo('filePresupuesto', i)">
+                      <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                    </button>
+                  </div>
+                  <label *ngIf="getFilesList('filePresupuesto').length < 4" for="filePresupuesto" class="flex items-center justify-center gap-2 w-full mt-2 py-2 border border-dashed border-indigo-500/30 rounded-lg text-sm font-medium text-indigo-400 cursor-pointer hover:bg-indigo-500/10 transition-colors">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" /></svg>
+                    Agregar otro documento
+                  </label>
+                </div>
               </div>
 
               <div class="bg-white/[0.02] border border-white/10 rounded-2xl p-5 hover:bg-white/[0.04] transition-colors" *ngIf="f['sufrio_lesiones'].value === true" [ngClass]="{'border-indigo-500/50 bg-indigo-500/5': f['fileMedicos'].value}">
                 <div class="flex justify-between items-start mb-4">
                   <div>
                     <label class="block font-semibold text-white">Certificados Médicos</label>
-                    <span class="text-sm text-slate-400">Historias clínicas o altas médicas.</span>
+                    <span class="text-sm text-slate-400">Historias clínicas o altas.</span>
                   </div>
                 </div>
                 <input type="file" id="fileMedicos" hidden multiple (change)="onFileChange($event, 'fileMedicos')" accept="image/*,application/pdf">
-                <label for="fileMedicos" class="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-slate-700 rounded-xl cursor-pointer hover:border-indigo-500/50 hover:bg-white/5 transition-colors">
-                  <div *ngIf="!f['fileMedicos'].value" class="flex flex-col items-center justify-center pt-5 pb-6">
-                    <svg class="w-6 h-6 text-slate-500 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" /></svg>
+                
+                <label *ngIf="getFilesList('fileMedicos').length === 0" for="fileMedicos" class="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-slate-700 rounded-xl cursor-pointer hover:border-indigo-500/50 hover:bg-white/5 transition-colors">
+                  <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                    <svg class="w-6 h-6 text-slate-500 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
                     <p class="text-sm text-slate-400 font-medium">Tocar para adjuntar</p>
                   </div>
-                  <div *ngIf="f['fileMedicos'].value" class="text-indigo-400 font-semibold text-sm">
-                    {{ getFilesList('fileMedicos').length }} archivos cargados
-                  </div>
                 </label>
+
+                <div *ngIf="getFilesList('fileMedicos').length > 0" class="space-y-2 mt-2">
+                  <div *ngFor="let fileName of getFilesList('fileMedicos'); let i = index" class="flex items-center justify-between bg-[#0f172a] border border-slate-800 rounded-lg p-3">
+                    <div class="flex items-center gap-3 overflow-hidden">
+                      <svg class="w-4 h-4 text-indigo-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                      <span class="text-sm text-slate-300 truncate" [title]="fileName">{{ fileName }}</span>
+                    </div>
+                    <button type="button" class="text-slate-500 hover:text-red-400 transition-colors p-1 focus:outline-none shrink-0" (click)="borrarArchivo('fileMedicos', i)">
+                      <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                    </button>
+                  </div>
+                  <label *ngIf="getFilesList('fileMedicos').length < 4" for="fileMedicos" class="flex items-center justify-center gap-2 w-full mt-2 py-2 border border-dashed border-indigo-500/30 rounded-lg text-sm font-medium text-indigo-400 cursor-pointer hover:bg-indigo-500/10 transition-colors">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" /></svg>
+                    Agregar otro documento
+                  </label>
+                </div>
               </div>
 
               <div class="bg-white/[0.02] border border-white/10 rounded-2xl p-5 hover:bg-white/[0.04] transition-colors" [ngClass]="{'border-indigo-500/50 bg-indigo-500/5': f['fileCBU'].value}">
                 <div class="flex justify-between items-start mb-4">
                   <div>
                     <label class="block font-semibold text-white">Constancia de CBU / CVU</label>
-                    <span class="text-sm text-slate-400">Comprobante de cuenta para transferencias.</span>
+                    <span class="text-sm text-slate-400">Comprobante de cuenta.</span>
                   </div>
                 </div>
                 <input type="file" id="fileCBU" hidden multiple (change)="onFileChange($event, 'fileCBU')" accept="image/*,application/pdf">
-                <label for="fileCBU" class="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-slate-700 rounded-xl cursor-pointer hover:border-indigo-500/50 hover:bg-white/5 transition-colors">
-                  <div *ngIf="!f['fileCBU'].value" class="flex flex-col items-center justify-center pt-5 pb-6">
-                    <svg class="w-6 h-6 text-slate-500 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" /></svg>
+                
+                <label *ngIf="getFilesList('fileCBU').length === 0" for="fileCBU" class="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-slate-700 rounded-xl cursor-pointer hover:border-indigo-500/50 hover:bg-white/5 transition-colors">
+                  <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                    <svg class="w-6 h-6 text-slate-500 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
                     <p class="text-sm text-slate-400 font-medium">Tocar para adjuntar</p>
                   </div>
-                  <div *ngIf="f['fileCBU'].value" class="text-indigo-400 font-semibold text-sm">
-                    {{ getFilesList('fileCBU').length }} archivos cargados
-                  </div>
                 </label>
+
+                <div *ngIf="getFilesList('fileCBU').length > 0" class="space-y-2 mt-2">
+                  <div *ngFor="let fileName of getFilesList('fileCBU'); let i = index" class="flex items-center justify-between bg-[#0f172a] border border-slate-800 rounded-lg p-3">
+                    <div class="flex items-center gap-3 overflow-hidden">
+                      <svg class="w-4 h-4 text-indigo-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                      <span class="text-sm text-slate-300 truncate" [title]="fileName">{{ fileName }}</span>
+                    </div>
+                    <button type="button" class="text-slate-500 hover:text-red-400 transition-colors p-1 focus:outline-none shrink-0" (click)="borrarArchivo('fileCBU', i)">
+                      <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                    </button>
+                  </div>
+                  <label *ngIf="getFilesList('fileCBU').length < 4" for="fileCBU" class="flex items-center justify-center gap-2 w-full mt-2 py-2 border border-dashed border-indigo-500/30 rounded-lg text-sm font-medium text-indigo-400 cursor-pointer hover:bg-indigo-500/10 transition-colors">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" /></svg>
+                    Agregar otro documento
+                  </label>
+                </div>
               </div>
 
               <div class="bg-white/[0.02] border border-white/10 rounded-2xl p-5 hover:bg-white/[0.04] transition-colors" [ngClass]="{'border-indigo-500/50 bg-indigo-500/5': f['fileComplementaria'].value}">
                 <div class="flex justify-between items-start mb-4">
                   <div>
                     <label class="block font-semibold text-white">Doc. Complementaria</label>
-                    <span class="text-sm text-slate-400">Exposiciones policiales u otros elementos.</span>
+                    <span class="text-sm text-slate-400">Exposiciones policiales, etc.</span>
                   </div>
                 </div>
                 <input type="file" id="fileComplementaria" hidden multiple (change)="onFileChange($event, 'fileComplementaria')" accept="image/*,application/pdf">
-                <label for="fileComplementaria" class="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-slate-700 rounded-xl cursor-pointer hover:border-indigo-500/50 hover:bg-white/5 transition-colors">
-                  <div *ngIf="!f['fileComplementaria'].value" class="flex flex-col items-center justify-center pt-5 pb-6">
-                    <svg class="w-6 h-6 text-slate-500 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" /></svg>
+                
+                <label *ngIf="getFilesList('fileComplementaria').length === 0" for="fileComplementaria" class="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-slate-700 rounded-xl cursor-pointer hover:border-indigo-500/50 hover:bg-white/5 transition-colors">
+                  <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                    <svg class="w-6 h-6 text-slate-500 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
                     <p class="text-sm text-slate-400 font-medium">Tocar para adjuntar</p>
                   </div>
-                  <div *ngIf="f['fileComplementaria'].value" class="text-indigo-400 font-semibold text-sm">
-                    {{ getFilesList('fileComplementaria').length }} archivos cargados
-                  </div>
                 </label>
+
+                <div *ngIf="getFilesList('fileComplementaria').length > 0" class="space-y-2 mt-2">
+                  <div *ngFor="let fileName of getFilesList('fileComplementaria'); let i = index" class="flex items-center justify-between bg-[#0f172a] border border-slate-800 rounded-lg p-3">
+                    <div class="flex items-center gap-3 overflow-hidden">
+                      <svg class="w-4 h-4 text-indigo-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                      <span class="text-sm text-slate-300 truncate" [title]="fileName">{{ fileName }}</span>
+                    </div>
+                    <button type="button" class="text-slate-500 hover:text-red-400 transition-colors p-1 focus:outline-none shrink-0" (click)="borrarArchivo('fileComplementaria', i)">
+                      <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                    </button>
+                  </div>
+                  <label *ngIf="getFilesList('fileComplementaria').length < 4" for="fileComplementaria" class="flex items-center justify-center gap-2 w-full mt-2 py-2 border border-dashed border-indigo-500/30 rounded-lg text-sm font-medium text-indigo-400 cursor-pointer hover:bg-indigo-500/10 transition-colors">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" /></svg>
+                    Agregar otro documento
+                  </label>
+                </div>
               </div>
 
             </div>
