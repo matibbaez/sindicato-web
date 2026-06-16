@@ -93,21 +93,22 @@ export class MiEquipoComponent implements OnInit {
       return;
     }
 
-    this.guardandoUsuario = true; // Prendemos spinner
+    this.guardandoUsuario = true; // Prende el spinner de pantalla completa
     
     this.usersService.create(this.userForm.value).subscribe({
       next: (nuevoUser) => {
-        this.notificacionService.showSuccess(`Usuario ${nuevoUser.nombre} creado!`);
-        // Como lo crea el Admin, ya nace aprobado
-        this.listaUsuarios.push({ ...nuevoUser, isApproved: true }); 
+        this.notificacionService.showSuccess(`Usuario creado con éxito.`);
         
         this.mostrarFormulario = false;
         this.userForm.reset({ role: 'Tramitador' });
-        this.guardandoUsuario = false; // Apagamos spinner
+        this.guardandoUsuario = false; // Apaga el spinner gigante
+
+        // Refrescamos la tabla con los datos reales del backend
+        this.cargarDatos(); 
       },
       error: () => {
         this.notificacionService.showError('Error al crear usuario.');
-        this.guardandoUsuario = false; // Apagamos spinner
+        this.guardandoUsuario = false; // Apaga el spinner en caso de error
       }
     });
   }
