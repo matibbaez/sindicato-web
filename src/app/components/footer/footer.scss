@@ -1,0 +1,176 @@
+// /* VARIABLES (Mismas que el resto de la app) */
+// $bg-dark: #0f172a;       
+// $accent: #f59e0b;        
+// $primary: #3b82f6;       
+
+// .site-footer {
+//   background-color: $bg-dark;
+//   color: rgba(255, 255, 255, 0.7);
+//   padding-top: 5rem;
+//   border-top: 1px solid rgba(255, 255, 255, 0.05);
+//   font-family: 'Montserrat', sans-serif;
+//   position: relative;
+//   z-index: 5;
+// }
+
+// .footer-container {
+//   max-width: 1100px;
+//   margin: 0 auto;
+//   padding: 0 2rem;
+//   display: grid;
+//   grid-template-columns: 2fr 1fr 1.5fr; 
+//   gap: 4rem;
+//   padding-bottom: 4rem;
+// }
+
+// /* --- LOGO --- */
+// .footer-logo {
+//   margin-bottom: 1.5rem; /* Le damos un poquito más de aire abajo para que no se pegue al texto */
+// }
+
+// .footer-logo-link {
+//   text-decoration: none;
+//   display: flex;
+//   align-items: center; /* Centramos verticalmente */
+  
+//   .footer-logo-img {
+//     height: 80px; /* Un tamaño apenas más chico que el navbar para el footer */
+//     width: auto;
+//     object-fit: contain;
+//     transition: transform 0.3s ease;
+//   }
+
+//   &:hover { 
+//     opacity: 0.9; 
+//     .footer-logo-img {
+//       transform: scale(1.02);
+//     }
+//   }
+// }
+
+// /* --- COLUMNAS --- */
+// .footer-links-col {
+//   h4 {
+//     color: white;
+//     font-size: 1rem;
+//     font-weight: 800;
+//     margin-bottom: 1.5rem;
+//     text-transform: uppercase;
+//     letter-spacing: 1px;
+//   }
+
+//   ul {
+//     list-style: none; padding: 0; margin: 0;
+    
+//     li {
+//       margin-bottom: 0.8rem;
+      
+//       a {
+//         text-decoration: none;
+//         color: rgba(255, 255, 255, 0.6);
+//         font-size: 0.95rem;
+//         transition: all 0.2s ease;
+
+//         &:hover {
+//           color: $accent; 
+//           padding-left: 5px; 
+//         }
+//       }
+//     }
+//   }
+// }
+
+// /* Lista de Contacto con Iconos */
+// .contact-list li {
+//   display: flex; align-items: center; gap: 0.75rem;
+//   color: rgba(255, 255, 255, 0.6); font-size: 0.95rem;
+//   margin-bottom: 1rem;
+  
+//   .icon {
+//     width: 20px; height: 20px;
+//     color: $accent;
+//     flex-shrink: 0;
+//   }
+// }
+
+// /* --- BARRA FINAL --- */
+// .footer-bottom {
+//   background-color: rgba(0, 0, 0, 0.3);
+//   padding: 1.5rem 0;
+//   font-size: 0.85rem;
+//   border-top: 1px solid rgba(255, 255, 255, 0.05);
+// }
+
+// .bottom-container {
+//   max-width: 1100px;
+//   margin: 0 auto;
+//   padding: 0 2rem;
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: center;
+//   color: rgba(255, 255, 255, 0.4);
+  
+//   p { margin: 0; }
+  
+//   .dev-name {
+//     color: white; font-weight: 600; opacity: 0.8;
+//   }
+// }
+
+// /* =========================================
+//    MOBILE OPTIMIZADO (COMPACTO)
+//    ========================================= */
+// @media (max-width: 768px) {
+  
+//   .site-footer {
+//     /* 1. Reducimos mucho el padding superior */
+//     padding-top: 3rem; 
+//   }
+
+//   .footer-container {
+//     grid-template-columns: 1fr;
+//     /* 2. Gap reducido entre secciones (antes 4rem) */
+//     gap: 2.5rem; 
+//     padding-bottom: 2.5rem;
+//     text-align: center;
+//   }
+
+//   /* Logo y Brand */
+//   .footer-logo-link { 
+//     justify-content: center; 
+//     font-size: 1.8rem; /* Un poco más chico */
+//   }
+//   .brand-desc { 
+//     margin: 0 auto; 
+//     font-size: 0.9rem; /* Texto más fino */
+//   }
+  
+//   /* Títulos de sección */
+//   .footer-links-col h4 {
+//     margin-bottom: 1rem; /* Menos espacio debajo del título */
+//     font-size: 0.9rem;
+//     color: rgba(255,255,255,0.9);
+//   }
+
+//   /* Listas más pegaditas */
+//   .footer-links-col ul li {
+//     margin-bottom: 0.5rem; /* Antes 0.8rem */
+//   }
+
+//   .contact-list li { 
+//     justify-content: center; 
+//     margin-bottom: 0.8rem;
+//   }
+
+//   /* Barra inferior */
+//   .footer-bottom {
+//     padding: 1rem 0; /* Más fina */
+//   }
+
+//   .bottom-container {
+//     flex-direction: column;
+//     gap: 0.5rem;
+//     text-align: center;
+//     font-size: 0.75rem;
+//   }
+// }

@@ -1,0 +1,605 @@
+<app-terminos-modal
+  *ngIf="mostrarTerminos"
+  (aceptar)="aceptarTerminos()"
+  (cancelar)="cancelarTerminos()">
+</app-terminos-modal>
+
+<div class="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[#030712]/80 backdrop-blur-xl transition-opacity" *ngIf="isCompressing">
+  <div class="w-16 h-16 border-4 border-indigo-500/20 border-t-indigo-500 rounded-full animate-spin mb-6"></div>
+  <h3 class="text-2xl font-bold text-white tracking-tight mb-2">Procesando información...</h3>
+  <p class="text-slate-400">Aguarde un instante por favor.</p>
+</div>
+
+<div class="min-h-screen flex flex-col lg:flex-row bg-[#030712] text-slate-50 font-sans selection:bg-indigo-500/30 pt-20">
+  
+  <aside class="relative w-full lg:w-[360px] xl:w-[400px] border-b lg:border-b-0 lg:border-r border-white/10 bg-white/[0.02] backdrop-blur-md p-8 lg:p-10 flex flex-col overflow-hidden shrink-0">
+    <div class="absolute top-[-10%] left-[-20%] w-[300px] h-[300px] bg-indigo-500/20 blur-[100px] rounded-full pointer-events-none"></div>
+    
+    <div class="relative z-10">
+      <h2 class="text-3xl font-extrabold tracking-tight text-white mb-4">
+        <ng-container [ngSwitch]="pasoActual">
+            <span *ngSwitchCase="0">Empecemos</span>
+            <span *ngSwitchCase="1">Tus Datos</span>
+            <span *ngSwitchCase="2">Documentación</span>
+            <span *ngSwitchCase="3">Confirmación</span>
+        </ng-container>
+      </h2>
+
+      <p class="text-slate-400 text-[15px] leading-relaxed mb-12">
+        <span *ngIf="pasoActual === 0">Seleccioná tu rol en el accidente para personalizar los requisitos legales.</span>
+        <span *ngIf="pasoActual === 1">Ingresá tus datos personales para que podamos contactarte y armar el expediente.</span>
+        <span *ngIf="pasoActual === 2">Si tenés documentación a mano, subila ahora. Si no, la pediremos luego.</span>
+        <span *ngIf="pasoActual === 3">Revisá que la información inicial esté correcta y firmá digitalmente.</span>
+      </p>
+
+      <div class="flex flex-col gap-6 relative before:absolute before:inset-y-0 before:left-[19px] before:w-[2px] before:bg-white/5">
+        
+        <div class="flex items-center gap-4 relative z-10 transition-opacity" [ngClass]="pasoActual === 0 ? 'opacity-100' : 'opacity-50'">
+          <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-colors shadow-lg"
+               [ngClass]="pasoActual > 0 ? 'bg-indigo-500 text-white shadow-indigo-500/30' : (pasoActual === 0 ? 'bg-white text-slate-900 shadow-white/20' : 'bg-slate-800 text-slate-500 border border-slate-700')">
+            {{ pasoActual > 0 ? '✓' : '1' }}
+          </div>
+          <span class="font-semibold" [ngClass]="pasoActual === 0 ? 'text-white' : 'text-slate-300'">Rol de Víctima</span>
+        </div>
+
+        <div class="flex items-center gap-4 relative z-10 transition-opacity" [ngClass]="pasoActual === 1 ? 'opacity-100' : 'opacity-50'">
+          <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-colors shadow-lg"
+               [ngClass]="pasoActual > 1 ? 'bg-indigo-500 text-white shadow-indigo-500/30' : (pasoActual === 1 ? 'bg-white text-slate-900 shadow-white/20' : 'bg-slate-800 text-slate-500 border border-slate-700')">
+            {{ pasoActual > 1 ? '✓' : '2' }}
+          </div>
+          <span class="font-semibold" [ngClass]="pasoActual === 1 ? 'text-white' : 'text-slate-300'">Datos Básicos</span>
+        </div>
+
+        <div class="flex items-center gap-4 relative z-10 transition-opacity" [ngClass]="pasoActual === 2 ? 'opacity-100' : 'opacity-50'">
+          <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-colors shadow-lg"
+               [ngClass]="pasoActual > 2 ? 'bg-indigo-500 text-white shadow-indigo-500/30' : (pasoActual === 2 ? 'bg-white text-slate-900 shadow-white/20' : 'bg-slate-800 text-slate-500 border border-slate-700')">
+            {{ pasoActual > 2 ? '✓' : '3' }}
+          </div>
+          <span class="font-semibold" [ngClass]="pasoActual === 2 ? 'text-white' : 'text-slate-300'">Documentación</span>
+        </div>
+
+        <div class="flex items-center gap-4 relative z-10 transition-opacity" [ngClass]="pasoActual === 3 ? 'opacity-100' : 'opacity-50'">
+          <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-colors shadow-lg"
+               [ngClass]="pasoActual === 3 ? 'bg-white text-slate-900 shadow-white/20' : 'bg-slate-800 text-slate-500 border border-slate-700'">
+            4
+          </div>
+          <span class="font-semibold" [ngClass]="pasoActual === 3 ? 'text-white' : 'text-slate-300'">Firma y Envío</span>
+        </div>
+
+      </div>
+
+      <div class="mt-auto pt-12">
+        <div class="flex items-center gap-3 bg-indigo-500/10 border border-indigo-500/20 px-4 py-3 rounded-xl text-indigo-300 text-sm font-medium">
+          <svg class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" /></svg>
+          Sindicato de Motos. Gestión protegida.
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="flex-1 relative overflow-y-auto p-6 lg:p-12 xl:p-16">
+    <div class="max-w-3xl mx-auto w-full">
+
+      <div class="animate-fade-in" *ngIf="pasoActual === 0">
+        <h3 class="text-3xl font-bold text-white mb-2 tracking-tight">Seleccioná tu Rol</h3>
+        <p class="text-slate-400 mb-10">Indicá cómo participaste en el hecho para que adaptemos las preguntas.</p>
+        
+        <div class="grid gap-5 sm:grid-cols-3">
+          
+          <div class="group relative bg-white/[0.02] border border-white/10 hover:border-indigo-500/50 hover:bg-white/[0.04] rounded-3xl p-6 cursor-pointer transition-all duration-300 hover:-translate-y-1 active:scale-[0.98]" (click)="seleccionarRol('Conductor')">
+            <div class="w-14 h-14 rounded-2xl bg-indigo-500/10 flex items-center justify-center mb-5 text-indigo-400 group-hover:bg-indigo-500 group-hover:text-white transition-colors">
+              <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" /></svg>
+            </div>
+            <h4 class="text-xl font-bold text-white mb-1">Conductor</h4>
+            <p class="text-sm text-slate-400">Manejabas la moto o vehículo.</p>
+          </div>
+
+          <div class="group relative bg-white/[0.02] border border-white/10 hover:border-blue-500/50 hover:bg-white/[0.04] rounded-3xl p-6 cursor-pointer transition-all duration-300 hover:-translate-y-1 active:scale-[0.98]" (click)="seleccionarRol('Acompanante')">
+            <div class="w-14 h-14 rounded-2xl bg-blue-500/10 flex items-center justify-center mb-5 text-blue-400 group-hover:bg-blue-500 group-hover:text-white transition-colors">
+              <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
+            </div>
+            <h4 class="text-xl font-bold text-white mb-1">Acompañante</h4>
+            <p class="text-sm text-slate-400">Ibas como pasajero.</p>
+          </div>
+
+          <div class="group relative bg-white/[0.02] border border-white/10 hover:border-cyan-500/50 hover:bg-white/[0.04] rounded-3xl p-6 cursor-pointer transition-all duration-300 hover:-translate-y-1 active:scale-[0.98]" (click)="seleccionarRol('Peaton')">
+            <div class="w-14 h-14 rounded-2xl bg-cyan-500/10 flex items-center justify-center mb-5 text-cyan-400 group-hover:bg-cyan-500 group-hover:text-white transition-colors">
+              <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" /></svg>
+            </div>
+            <h4 class="text-xl font-bold text-white mb-1">Peatón / Bici</h4>
+            <p class="text-sm text-slate-400">Fuiste embestido en vía pública.</p>
+          </div>
+
+        </div>
+      </div>
+
+      <form [formGroup]="reclamoForm" autocomplete="off" *ngIf="pasoActual === 1 || pasoActual === 2">
+
+        <div [hidden]="pasoActual !== 1" class="animate-fade-in">
+          
+          <button type="button" class="group flex items-center gap-2 text-sm font-semibold text-slate-400 hover:text-white transition-colors mb-8 focus:outline-none" (click)="volverAStep1()">
+            <svg class="w-5 h-5 group-hover:-translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" /></svg>
+            Cambiar Rol
+          </button>
+
+          <div class="space-y-4 mb-10">
+            <div class="flex items-center justify-between bg-slate-900 border border-slate-800 p-4 rounded-2xl" *ngIf="esConductor">
+              <div>
+                <span class="block font-semibold text-white">¿Tenías Seguro Vigente?</span>
+                <span class="text-sm text-slate-400">Al momento del accidente.</span>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" formControlName="tiene_seguro" class="sr-only peer" (change)="toggleSeguro($event.target.checked)">
+                <div class="w-11 h-6 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-500"></div>
+              </label>
+            </div>
+
+            <div class="flex items-center justify-between bg-slate-900 border border-slate-800 p-4 rounded-2xl" *ngIf="esConductor && tieneSeguro">
+              <div>
+                <span class="block font-semibold text-white">¿Ya hiciste la Denuncia?</span>
+                <span class="text-sm text-slate-400">Administrativa (en tu seguro).</span>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" formControlName="hizo_denuncia" class="sr-only peer" (change)="toggleDenuncia($event.target.checked)">
+                <div class="w-11 h-6 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-500"></div>
+              </label>
+            </div>
+
+            <div class="flex items-center justify-between bg-slate-900 border border-slate-800 p-4 rounded-2xl">
+              <div>
+                <span class="block font-semibold text-white">¿Sufriste heridas?</span>
+                <span class="text-sm text-slate-400">Lesiones físicas por el impacto.</span>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" formControlName="sufrio_lesiones" class="sr-only peer" (change)="actualizarValidaciones(f['rol_victima'].value || '')">
+                <div class="w-11 h-6 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-500"></div>
+              </label>
+            </div>
+          </div>
+
+          <div *ngIf="esConductor && !tieneSeguro" class="bg-amber-500/10 border border-amber-500/20 text-amber-400 p-4 rounded-2xl mb-8 flex gap-3 items-start">
+            <svg class="w-6 h-6 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+            <div>
+              <strong class="block mb-1">Carta de No Seguro</strong>
+              <p class="text-sm opacity-80">Se generará automáticamente el documento legal. Completá los datos del tercero obligatoriamente.</p>
+            </div>
+          </div>
+
+          <!-- Datos Personales -->
+          <div class="mb-10">
+            <h4 class="text-xl font-bold text-white mb-6 border-b border-white/10 pb-2">Datos Obligatorios</h4>
+            
+            <div class="space-y-5">
+              <div>
+                <label class="block text-sm font-medium text-slate-400 mb-1.5">Nombre y Apellido <span class="text-indigo-400">*</span></label>
+                <input type="text" formControlName="nombre" class="w-full bg-[#0f172a] border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors" placeholder="Tal cual figura en tu DNI">
+                <div *ngIf="f['nombre'].invalid && (f['nombre'].dirty || f['nombre'].touched)" class="mt-1 text-sm text-red-400">
+                  <span *ngIf="f['nombre'].errors?.['required']">El nombre es obligatorio.</span>
+                </div>
+              </div>
+
+              <!-- GRILLA: DNI y Celular -->
+              <div class="grid sm:grid-cols-2 gap-5">
+                <div>
+                  <label class="block text-sm font-medium text-slate-400 mb-1.5">DNI <span class="text-indigo-400">*</span></label>
+                  <input type="text" formControlName="dni" class="w-full bg-[#0f172a] border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors" placeholder="Sin puntos">
+                  <div *ngIf="f['dni'].invalid && (f['dni'].dirty || f['dni'].touched)" class="mt-1 text-sm text-red-400">
+                    <span>El DNI es obligatorio y debe ser numérico.</span>
+                  </div>
+                </div>
+
+                <div>
+                  <label class="block text-sm font-medium text-slate-400 mb-1.5">Celular / WhatsApp <span class="text-indigo-400">*</span></label>
+                  <input type="text" formControlName="telefono" class="w-full bg-[#0f172a] border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors" placeholder="Ej: 11 5555 6666">
+                  <div *ngIf="f['telefono'].invalid && (f['telefono'].dirty || f['telefono'].touched)" class="mt-1 text-sm text-red-400">
+                    <span>Requerido para contactarte.</span>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-slate-400 mb-1.5">Email (Opcional)</label>
+                <input type="email" formControlName="email" class="w-full bg-[#0f172a] border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500 transition-colors" placeholder="Para enviarte el seguimiento">
+              </div>
+            </div>
+          </div>
+
+          <!-- Botón Avanzar (Actualizado con f['dni'].invalid) -->
+          <div class="pt-6 border-t border-white/10 flex justify-end">
+            <button type="button" class="btn bg-white text-slate-950 w-full sm:w-auto hover:bg-slate-200 disabled:opacity-50 disabled:cursor-not-allowed" 
+                    (click)="avanzarAPaso2()" 
+                    [disabled]="f['nombre'].invalid || f['telefono'].invalid || f['dni'].invalid">
+              Siguiente: Subir Documentación
+              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
+            </button>
+          </div>
+
+        </div>
+
+        <div [hidden]="pasoActual !== 2" class="animate-fade-in">
+          
+          <button type="button" class="group flex items-center gap-2 text-sm font-semibold text-slate-400 hover:text-white transition-colors mb-8 focus:outline-none" (click)="volverAPaso1()">
+            <svg class="w-5 h-5 group-hover:-translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" /></svg>
+            Volver a Datos Básicos
+          </button>
+
+          <div class="bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 p-4 rounded-2xl mb-8 flex gap-3 items-start animate-fade-in" 
+               *ngIf="esConductor && hizoDenuncia">
+            <svg class="w-6 h-6 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            <div>
+              <strong class="block mb-1 text-white">Denuncia Administrativa Realizada</strong>
+              <p class="text-sm">Como ya tramitó la denuncia en su seguro, no es necesario que cargue los datos del siniestro a mano. Solo adjunte el comprobante digital de la denuncia abajo y el equipo legal extraerá la información.</p>
+            </div>
+          </div>
+
+          <div class="mb-10 animate-fade-in" 
+               *ngIf="!esConductor || !tieneSeguro || !hizoDenuncia">
+            
+            <h4 class="text-xl font-bold text-white mb-6 border-b border-white/10 pb-2">Detalles del Accidente</h4>
+            
+            <div class="grid sm:grid-cols-2 gap-5">
+              <div>
+                <label class="block text-sm font-medium text-slate-400 mb-1.5">Fecha del hecho</label>
+                <input type="date" formControlName="fecha_hecho" class="w-full bg-[#0f172a] border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500 transition-colors">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-slate-400 mb-1.5">Hora aproximada</label>
+                <input type="time" formControlName="hora_hecho" class="w-full bg-[#0f172a] border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500 transition-colors">
+              </div>
+              <div class="sm:col-span-2">
+                <label class="block text-sm font-medium text-slate-400 mb-1.5">Lugar del hecho (Intersección o Calle y Altura)</label>
+                <input type="text" formControlName="lugar_hecho" placeholder="Ej: Av. Hipólito Yrigoyen y Antártida Argentina" class="w-full bg-[#0f172a] border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500 transition-colors">
+              </div>
+              <div class="sm:col-span-2">
+                <label class="block text-sm font-medium text-slate-400 mb-1.5">Relato de lo acontecido</label>
+                <textarea formControlName="relato_hecho" rows="3" placeholder="Describa brevemente la mecánica del siniestro..." class="w-full bg-[#0f172a] border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500 transition-colors resize-none"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-10 animate-fade-in" 
+               *ngIf="!esConductor || !tieneSeguro || !hizoDenuncia">
+            
+            <h4 class="text-xl font-bold text-white mb-6 border-b border-white/10 pb-2">Datos del Tercero Implicado</h4>
+            
+            <div class="grid sm:grid-cols-2 gap-5">
+              <div>
+                <label class="block text-sm font-medium text-slate-400 mb-1.5">Aseguradora del tercero</label>
+                <select formControlName="aseguradora_tercero" class="w-full bg-[#0f172a] border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500 transition-colors">
+                  <option value="" disabled selected>Seleccionar compañía...</option>
+                  <option *ngFor="let a of aseguradoras" [value]="a">{{ a }}</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-slate-400 mb-1.5">Patente del tercero</label>
+                <input type="text" formControlName="patente_tercero" class="w-full bg-[#0f172a] border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none uppercase focus:border-indigo-500 transition-colors" placeholder="AA999ZZ o AAA999">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-slate-400 mb-1.5">Nombre del conductor tercero</label>
+                <input type="text" formControlName="tercero_nombre" class="w-full bg-[#0f172a] border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500 transition-colors" placeholder="Nombre y Apellido">
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-slate-400 mb-1.5">DNI del tercero</label>
+                <input type="text" formControlName="tercero_dni" class="w-full bg-[#0f172a] border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500 transition-colors" placeholder="Sin puntos">
+              </div>
+              <div class="sm:col-span-2">
+                <label class="block text-sm font-medium text-slate-400 mb-1.5">Vehículo del tercero (Marca y Modelo)</label>
+                <input type="text" formControlName="tercero_marca_modelo" class="w-full bg-[#0f172a] border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500 transition-colors" placeholder="Ej: Ford Focus Blanco">
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-10">
+            <h4 class="text-xl font-bold text-white mb-6 border-b border-white/10 pb-2">Archivos y Documentación (Opcional)</h4>
+            <p class="text-slate-400 text-sm mb-6">Todos los adjuntos son opcionales para agilizar el ingreso. Podrá completarlos luego con el tramitador.</p>
+            
+            <div class="grid gap-4 sm:grid-cols-2">
+              
+              <div class="bg-white/[0.02] border border-white/10 rounded-2xl p-5 hover:bg-white/[0.04] transition-colors" [ngClass]="{'border-indigo-500/50 bg-indigo-500/5': f['fileDNI'].value}">
+                <div class="flex justify-between items-start mb-4">
+                  <div>
+                    <label class="block font-semibold text-white">DNI del titular</label>
+                    <span class="text-sm text-slate-400">Frente y dorso en imagen o PDF.</span>
+                  </div>
+                </div>
+                <input type="file" id="fileDNI" hidden multiple (change)="onFileChange($event, 'fileDNI')" accept="image/*,application/pdf">
+                <label for="fileDNI" class="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-slate-700 rounded-xl cursor-pointer hover:border-indigo-500/50 hover:bg-white/5 transition-colors">
+                  <div *ngIf="!f['fileDNI'].value" class="flex flex-col items-center justify-center pt-5 pb-6">
+                    <svg class="w-6 h-6 text-slate-500 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" /></svg>
+                    <p class="text-sm text-slate-400 font-medium">Tocar para adjuntar</p>
+                  </div>
+                  <div *ngIf="f['fileDNI'].value" class="text-indigo-400 font-semibold text-sm">
+                    {{ getFilesList('fileDNI').length }} archivos cargados
+                  </div>
+                </label>
+              </div>
+
+              <div class="bg-white/[0.02] border border-white/10 rounded-2xl p-5 hover:bg-white/[0.04] transition-colors" *ngIf="esConductor" [ngClass]="{'border-indigo-500/50 bg-indigo-500/5': f['fileLicencia'].value}">
+                <div class="flex justify-between items-start mb-4">
+                  <div>
+                    <label class="block font-semibold text-white">Licencia de Conducir</label>
+                    <span class="text-sm text-slate-400">Frente y dorso vigentes.</span>
+                  </div>
+                </div>
+                <input type="file" id="fileLicencia" hidden multiple (change)="onFileChange($event, 'fileLicencia')" accept="image/*,application/pdf">
+                <label for="fileLicencia" class="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-slate-700 rounded-xl cursor-pointer hover:border-indigo-500/50 hover:bg-white/5 transition-colors">
+                  <div *ngIf="!f['fileLicencia'].value" class="flex flex-col items-center justify-center pt-5 pb-6">
+                    <svg class="w-6 h-6 text-slate-500 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" /></svg>
+                    <p class="text-sm text-slate-400 font-medium">Tocar para adjuntar</p>
+                  </div>
+                  <div *ngIf="f['fileLicencia'].value" class="text-indigo-400 font-semibold text-sm">
+                    {{ getFilesList('fileLicencia').length }} archivos cargados
+                  </div>
+                </label>
+              </div>
+
+              <div class="bg-white/[0.02] border border-white/10 rounded-2xl p-5 hover:bg-white/[0.04] transition-colors" *ngIf="esConductor" [ngClass]="{'border-indigo-500/50 bg-indigo-500/5': f['fileCedula'].value}">
+                <div class="flex justify-between items-start mb-4">
+                  <div>
+                    <label class="block font-semibold text-white">Cédula del Vehículo</label>
+                    <span class="text-sm text-slate-400">Cédula Verde o Azul.</span>
+                  </div>
+                </div>
+                <input type="file" id="fileCedula" hidden multiple (change)="onFileChange($event, 'fileCedula')" accept="image/*,application/pdf">
+                <label for="fileCedula" class="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-slate-700 rounded-xl cursor-pointer hover:border-indigo-500/50 hover:bg-white/5 transition-colors">
+                  <div *ngIf="!f['fileCedula'].value" class="flex flex-col items-center justify-center pt-5 pb-6">
+                    <svg class="w-6 h-6 text-slate-500 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" /></svg>
+                    <p class="text-sm text-slate-400 font-medium">Tocar para adjuntar</p>
+                  </div>
+                  <div *ngIf="f['fileCedula'].value" class="text-indigo-400 font-semibold text-sm">
+                    {{ getFilesList('fileCedula').length }} archivos cargados
+                  </div>
+                </label>
+              </div>
+
+              <div class="bg-white/[0.02] border border-white/10 rounded-2xl p-5 hover:bg-white/[0.04] transition-colors" *ngIf="esConductor && tieneSeguro" [ngClass]="{'border-indigo-500/50 bg-indigo-500/5': f['fileSeguro'].value}">
+                <div class="flex justify-between items-start mb-4">
+                  <div>
+                    <label class="block font-semibold text-white">Certificado de Cobertura</label>
+                    <span class="text-sm text-slate-400">Constancia de seguro al día.</span>
+                  </div>
+                </div>
+                <input type="file" id="fileSeguro" hidden multiple (change)="onFileChange($event, 'fileSeguro')" accept="image/*,application/pdf">
+                <label for="fileSeguro" class="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-slate-700 rounded-xl cursor-pointer hover:border-indigo-500/50 hover:bg-white/5 transition-colors">
+                  <div *ngIf="!f['fileSeguro'].value" class="flex flex-col items-center justify-center pt-5 pb-6">
+                    <svg class="w-6 h-6 text-slate-500 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" /></svg>
+                    <p class="text-sm text-slate-400 font-medium">Tocar para adjuntar</p>
+                  </div>
+                  <div *ngIf="f['fileSeguro'].value" class="text-indigo-400 font-semibold text-sm">
+                    {{ getFilesList('fileSeguro').length }} archivos cargados
+                  </div>
+                </label>
+              </div>
+
+              <div class="bg-white/[0.02] border border-white/10 rounded-2xl p-5 hover:bg-white/[0.04] transition-colors" *ngIf="esConductor && tieneSeguro" [ngClass]="{'border-indigo-500/50 bg-indigo-500/5': f['fileDenuncia'].value}">
+                <div class="flex justify-between items-start mb-4">
+                  <div>
+                    <label class="block font-semibold text-white">Denuncia Administrativa</label>
+                    <span class="text-sm text-slate-400">Constancia presentada en su compañía.</span>
+                  </div>
+                </div>
+                <input type="file" id="fileDenuncia" hidden multiple (change)="onFileChange($event, 'fileDenuncia')" accept="image/*,application/pdf">
+                <label for="fileDenuncia" class="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-slate-700 rounded-xl cursor-pointer hover:border-indigo-500/50 hover:bg-white/5 transition-colors">
+                  <div *ngIf="!f['fileDenuncia'].value" class="flex flex-col items-center justify-center pt-5 pb-6">
+                    <svg class="w-6 h-6 text-slate-500 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" /></svg>
+                    <p class="text-sm text-slate-400 font-medium">Tocar para adjuntar</p>
+                  </div>
+                  <div *ngIf="f['fileDenuncia'].value" class="text-indigo-400 font-semibold text-sm">
+                    {{ getFilesList('fileDenuncia').length }} archivos cargados
+                  </div>
+                </label>
+              </div>
+
+              <div class="bg-white/[0.02] border border-white/10 rounded-2xl p-5 hover:bg-white/[0.04] transition-colors" *ngIf="f['rol_victima']?.value !== 'Peaton'" [ngClass]="{'border-indigo-500/50 bg-indigo-500/5': f['fileFotos'].value}">
+                <div class="flex justify-between items-start mb-4">
+                  <div>
+                    <label class="block font-semibold text-white">Fotos de los Daños</label>
+                    <span class="text-sm text-slate-400">Enfoque en impactos y patentes.</span>
+                  </div>
+                </div>
+                <input type="file" id="fileFotos" hidden multiple (change)="onFileChange($event, 'fileFotos')">
+                <label for="fileFotos" class="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-slate-700 rounded-xl cursor-pointer hover:border-indigo-500/50 hover:bg-white/5 transition-colors">
+                  <div *ngIf="!f['fileFotos'].value" class="flex flex-col items-center justify-center pt-5 pb-6">
+                    <svg class="w-6 h-6 text-slate-500 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" /></svg>
+                    <p class="text-sm text-slate-400 font-medium">Tocar para adjuntar</p>
+                  </div>
+                  <div *ngIf="f['fileFotos'].value" class="text-indigo-400 font-semibold text-sm">
+                    {{ fotosList.length }} fotos cargadas
+                  </div>
+                </label>
+              </div>
+
+              <div class="bg-white/[0.02] border border-white/10 rounded-2xl p-5 hover:bg-white/[0.04] transition-colors" *ngIf="esConductor" [ngClass]="{'border-indigo-500/50 bg-indigo-500/5': f['filePresupuesto'].value}">
+                <div class="flex justify-between items-start mb-4">
+                  <div>
+                    <label class="block font-semibold text-white">Presupuesto / Franquicia</label>
+                    <span class="text-sm text-slate-400">Cómputo de reparaciones o certificados.</span>
+                  </div>
+                </div>
+                <input type="file" id="filePresupuesto" hidden multiple (change)="onFileChange($event, 'filePresupuesto')" accept="image/*,application/pdf">
+                <label for="filePresupuesto" class="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-slate-700 rounded-xl cursor-pointer hover:border-indigo-500/50 hover:bg-white/5 transition-colors">
+                  <div *ngIf="!f['filePresupuesto'].value" class="flex flex-col items-center justify-center pt-5 pb-6">
+                    <svg class="w-6 h-6 text-slate-500 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" /></svg>
+                    <p class="text-sm text-slate-400 font-medium">Tocar para adjuntar</p>
+                  </div>
+                  <div *ngIf="f['filePresupuesto'].value" class="text-indigo-400 font-semibold text-sm">
+                    {{ getFilesList('filePresupuesto').length }} archivos cargados
+                  </div>
+                </label>
+              </div>
+
+              <div class="bg-white/[0.02] border border-white/10 rounded-2xl p-5 hover:bg-white/[0.04] transition-colors" *ngIf="f['sufrio_lesiones'].value === true" [ngClass]="{'border-indigo-500/50 bg-indigo-500/5': f['fileMedicos'].value}">
+                <div class="flex justify-between items-start mb-4">
+                  <div>
+                    <label class="block font-semibold text-white">Certificados Médicos</label>
+                    <span class="text-sm text-slate-400">Historias clínicas o altas médicas.</span>
+                  </div>
+                </div>
+                <input type="file" id="fileMedicos" hidden multiple (change)="onFileChange($event, 'fileMedicos')" accept="image/*,application/pdf">
+                <label for="fileMedicos" class="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-slate-700 rounded-xl cursor-pointer hover:border-indigo-500/50 hover:bg-white/5 transition-colors">
+                  <div *ngIf="!f['fileMedicos'].value" class="flex flex-col items-center justify-center pt-5 pb-6">
+                    <svg class="w-6 h-6 text-slate-500 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" /></svg>
+                    <p class="text-sm text-slate-400 font-medium">Tocar para adjuntar</p>
+                  </div>
+                  <div *ngIf="f['fileMedicos'].value" class="text-indigo-400 font-semibold text-sm">
+                    {{ getFilesList('fileMedicos').length }} archivos cargados
+                  </div>
+                </label>
+              </div>
+
+              <div class="bg-white/[0.02] border border-white/10 rounded-2xl p-5 hover:bg-white/[0.04] transition-colors" [ngClass]="{'border-indigo-500/50 bg-indigo-500/5': f['fileCBU'].value}">
+                <div class="flex justify-between items-start mb-4">
+                  <div>
+                    <label class="block font-semibold text-white">Constancia de CBU / CVU</label>
+                    <span class="text-sm text-slate-400">Comprobante de cuenta para transferencias.</span>
+                  </div>
+                </div>
+                <input type="file" id="fileCBU" hidden multiple (change)="onFileChange($event, 'fileCBU')" accept="image/*,application/pdf">
+                <label for="fileCBU" class="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-slate-700 rounded-xl cursor-pointer hover:border-indigo-500/50 hover:bg-white/5 transition-colors">
+                  <div *ngIf="!f['fileCBU'].value" class="flex flex-col items-center justify-center pt-5 pb-6">
+                    <svg class="w-6 h-6 text-slate-500 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" /></svg>
+                    <p class="text-sm text-slate-400 font-medium">Tocar para adjuntar</p>
+                  </div>
+                  <div *ngIf="f['fileCBU'].value" class="text-indigo-400 font-semibold text-sm">
+                    {{ getFilesList('fileCBU').length }} archivos cargados
+                  </div>
+                </label>
+              </div>
+
+              <div class="bg-white/[0.02] border border-white/10 rounded-2xl p-5 hover:bg-white/[0.04] transition-colors" [ngClass]="{'border-indigo-500/50 bg-indigo-500/5': f['fileComplementaria'].value}">
+                <div class="flex justify-between items-start mb-4">
+                  <div>
+                    <label class="block font-semibold text-white">Doc. Complementaria</label>
+                    <span class="text-sm text-slate-400">Exposiciones policiales u otros elementos.</span>
+                  </div>
+                </div>
+                <input type="file" id="fileComplementaria" hidden multiple (change)="onFileChange($event, 'fileComplementaria')" accept="image/*,application/pdf">
+                <label for="fileComplementaria" class="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-slate-700 rounded-xl cursor-pointer hover:border-indigo-500/50 hover:bg-white/5 transition-colors">
+                  <div *ngIf="!f['fileComplementaria'].value" class="flex flex-col items-center justify-center pt-5 pb-6">
+                    <svg class="w-6 h-6 text-slate-500 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" /></svg>
+                    <p class="text-sm text-slate-400 font-medium">Tocar para adjuntar</p>
+                  </div>
+                  <div *ngIf="f['fileComplementaria'].value" class="text-indigo-400 font-semibold text-sm">
+                    {{ getFilesList('fileComplementaria').length }} archivos cargados
+                  </div>
+                </label>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="pt-6 border-t border-white/10 flex justify-end">
+            <button type="button" class="btn bg-white text-slate-950 w-full sm:w-auto hover:bg-slate-200" (click)="irAConfirmacion()">
+              <span>Revisar y Firmar</span>
+              <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
+            </button>
+          </div>
+
+        </div>
+      </form>
+
+      <!-- ========================================== -->
+      <!-- PASO 3: REVISIÓN FINAL, DOCUMENTOS Y FIRMA -->
+      <!-- ========================================== -->
+      <div class="animate-fade-in" *ngIf="pasoActual === 3">
+        
+        <h3 class="text-3xl font-bold text-white mb-2 tracking-tight text-center">Revisión Final</h3>
+        <p class="text-slate-400 mb-10 text-center">Confirmá que tus datos de contacto estén correctos.</p>
+
+        <!-- Resumen de Datos -->
+        <div class="bg-white/[0.02] border border-white/10 rounded-3xl p-6 md:p-8 mb-8 backdrop-blur-sm shadow-xl">
+          <h4 class="text-lg font-bold text-white mb-4">Tus Datos</h4>
+          <div class="grid sm:grid-cols-2 gap-4 text-[15px] mb-8">
+            <div><span class="text-slate-500 block mb-1 uppercase text-xs tracking-wider font-bold">Nombre</span> <span class="font-medium text-white">{{ v.nombre }}</span></div>
+            <div><span class="text-slate-500 block mb-1 uppercase text-xs tracking-wider font-bold">Contacto</span> <span class="font-medium text-white">{{ v.telefono }}</span></div>
+            <div><span class="text-slate-500 block mb-1 uppercase text-xs tracking-wider font-bold">DNI</span> <span class="font-medium text-white">{{ v.dni }}</span></div>
+            <div>
+              <span class="text-slate-500 block mb-1 uppercase text-xs tracking-wider font-bold">Rol</span> 
+              <span class="inline-block px-2.5 py-1 rounded bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 text-xs font-bold uppercase">{{ v.rol_victima }}</span>
+            </div>
+          </div>
+          
+          <div *ngIf="v.aseguradora_tercero || v.patente_tercero">
+            <h4 class="text-lg font-bold text-white mb-4 border-t border-white/10 pt-6">El Tercero</h4>
+            <div class="grid sm:grid-cols-2 gap-4 text-[15px]">
+              <div *ngIf="v.aseguradora_tercero"><span class="text-slate-500 block mb-1 uppercase text-xs tracking-wider font-bold">Aseguradora</span> <span class="font-medium text-white">{{ v.aseguradora_tercero }}</span></div>
+              <div *ngIf="v.patente_tercero"><span class="text-slate-500 block mb-1 uppercase text-xs tracking-wider font-bold">Patente</span> <span class="font-mono tracking-widest text-white">{{ v.patente_tercero }}</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- VISOR DE DOCUMENTOS Y FIRMA DIGITAL        -->
+        <!-- ========================================== -->
+        <div class="mb-10" *ngIf="!noRequiereFirma">
+          
+          <div class="border-t border-white/10 pt-10 mb-8">
+            <h4 class="text-xl font-bold text-white mb-2 text-center">Documentación Legal y Firma</h4>
+            <p class="text-slate-400 text-sm text-center mb-6 max-w-lg mx-auto">Tu firma se aplicará a los siguientes documentos de representación. Podés leerlos a continuación antes de firmar:</p>
+          </div>
+          
+          <!-- Tabs de Documentos -->
+          <div class="flex flex-wrap justify-center gap-3 mb-4">
+            <button type="button" (click)="docActivo = 'poder'" 
+                    class="px-5 py-2 rounded-xl text-sm font-semibold transition-all duration-300 border border-transparent focus:outline-none"
+                    [ngClass]="docActivo === 'poder' ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/20 border-indigo-500/50' : 'bg-white/5 text-slate-400 hover:text-white hover:bg-white/10 hover:border-white/10'">
+              Representación Legal
+            </button>
+            <button type="button" (click)="docActivo = 'honorarios'" 
+                    class="px-5 py-2 rounded-xl text-sm font-semibold transition-all duration-300 border border-transparent focus:outline-none"
+                    [ngClass]="docActivo === 'honorarios' ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/20 border-indigo-500/50' : 'bg-white/5 text-slate-400 hover:text-white hover:bg-white/10 hover:border-white/10'">
+              Convenio Honorarios
+            </button>
+            <button *ngIf="esConductor && !tieneSeguro" type="button" (click)="docActivo = 'no_seguro'" 
+                    class="px-5 py-2 rounded-xl text-sm font-semibold transition-all duration-300 border border-transparent focus:outline-none"
+                    [ngClass]="docActivo === 'no_seguro' ? 'bg-amber-600 text-white shadow-lg shadow-amber-600/20 border-amber-500/50' : 'bg-white/5 text-slate-400 hover:text-white hover:bg-white/10 hover:border-white/10'">
+              Decl. No Seguro
+            </button>
+          </div>
+
+          <!-- Visor de texto -->
+          <div class="bg-[#0f172a] border border-slate-800 rounded-2xl p-6 h-64 overflow-y-auto mb-10 font-mono text-[13px] leading-relaxed text-slate-400 whitespace-pre-wrap shadow-inner scrollbar-thin">
+            <ng-container [ngSwitch]="docActivo">
+              <div *ngSwitchCase="'poder'">{{ textoPoder }}</div>
+              <div *ngSwitchCase="'honorarios'">{{ textoHonorarios }}</div>
+              <div *ngSwitchCase="'no_seguro'">{{ textoNoSeguro }}</div>
+            </ng-container>
+          </div>
+
+          <!-- Pad de Firma -->
+          <div class="bg-white p-2 sm:p-4 rounded-3xl border-4 border-indigo-500/20 mx-auto max-w-lg shadow-[0_0_30px_rgba(99,102,241,0.15)] relative">
+            <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-indigo-600 text-white px-4 py-1.5 rounded-full text-xs font-bold shadow-lg flex items-center gap-2 tracking-wide uppercase">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
+              Firmá en el recuadro
+            </div>
+            
+            <app-ui-signature #firmaPad (firmaHecha)="onFirmaRealizada()"></app-ui-signature>
+            
+          </div>
+          
+          <div *ngIf="errorFirma" class="mt-6 max-w-lg mx-auto bg-red-500/10 border border-red-500/20 text-red-400 text-center p-3 rounded-xl text-sm font-semibold animate-fade-in flex items-center justify-center gap-2">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+            Es obligatorio firmar para iniciar el expediente.
+          </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- BOTONES FINALES                            -->
+        <!-- ========================================== -->
+        <div class="flex flex-col-reverse sm:flex-row items-center justify-between gap-4 pt-8 border-t border-white/10">
+          <button class="btn-outline w-full sm:w-auto hover:bg-white/5" (click)="editarDatos()">
+            <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+            Volver y Editar
+          </button>
+          
+          <button class="btn w-full sm:w-auto bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-600/20" (click)="confirmarConFirma()" [disabled]="isLoading">
+            <span *ngIf="!isLoading">{{ noRequiereFirma ? 'Crear Expediente' : 'Firmar y Enviar' }}</span>
+            <svg *ngIf="isLoading" class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+</div>

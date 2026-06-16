@@ -1,0 +1,374 @@
+// $primary: #3b82f6;
+// $text-dark: #1e293b;
+// $text-muted: #64748b;
+// $bg-page: #f8fafc;
+// $bg-card: #ffffff;
+// $warning: #f59e0b;
+// $success: #10b981;
+// $danger: #ef4444;
+
+// .dashboard-container {
+//   /* Espacio superior para el Navbar fijo */
+//   padding: 140px 1rem 3rem 1rem; /* Ajuste mobile */
+//   max-width: 1200px;
+//   margin: 0 auto;
+//   min-height: 100vh;
+//   background-color: $bg-page;
+
+//   @media (min-width: 768px) {
+//     padding: 140px 2rem 3rem 2rem;
+//   }
+// }
+
+// /* --- HEADER --- */
+// .page-header {
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: flex-end;
+//   margin-bottom: 2.5rem;
+
+//   h1 { font-size: 2rem; font-weight: 800; color: $text-dark; margin: 0; letter-spacing: -1px; }
+//   p { margin: 5px 0 0 0; color: $text-muted; font-size: 1.1rem; }
+
+//   .date-badge {
+//     background: $bg-card; border: 1px solid #e2e8f0;
+//     padding: 8px 16px; border-radius: 20px;
+//     font-size: 0.9rem; font-weight: 600; color: $text-muted;
+//     text-transform: capitalize;
+//     box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+//   }
+// }
+
+// /* --- TARJETAS KPI --- */
+// .kpi-grid {
+//   display: grid;
+//   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+//   gap: 1.5rem;
+//   margin-bottom: 3rem;
+// }
+
+// .stat-card {
+//   background: $bg-card;
+//   padding: 1.5rem;
+//   border-radius: 16px;
+//   border: 1px solid #e2e8f0;
+//   display: flex;
+//   align-items: center;
+//   gap: 1.5rem;
+//   position: relative;
+//   overflow: hidden;
+//   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+//   box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+
+//   &:hover {
+//     transform: translateY(-4px);
+//     box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+//   }
+
+//   /* ICON BOX */
+//   .icon-box {
+//     width: 56px; height: 56px;
+//     border-radius: 14px;
+//     display: flex; align-items: center; justify-content: center;
+//     background: #f1f5f9; color: $text-muted;
+    
+//     &.blue { background: #eff6ff; color: $primary; }
+//     &.green { background: #ecfdf5; color: $success; }
+//   }
+
+//   /* INFO */
+//   .stat-info {
+//     display: flex; flex-direction: column;
+//     .label { font-size: 0.85rem; font-weight: 700; text-transform: uppercase; color: $text-muted; margin-bottom: 4px; }
+//     .number { font-size: 2rem; font-weight: 800; color: $text-dark; line-height: 1; }
+//     .sub-text { font-size: 0.85rem; color: $text-muted; margin-top: 4px; }
+//     .unit { font-size: 1rem; color: $text-muted; font-weight: 600; margin-left: 4px; }
+//   }
+
+//   /* --- ESTADO DE ALERTA (PENDIENTES) --- */
+//   &.alert-mode {
+//     cursor: pointer;
+//     background: #fffbeb; /* Fondo amarillo muy suave */
+//     border-color: #fcd34d;
+    
+//     .icon-box.user { background: #fef3c7; color: $warning; }
+    
+//     .pending-pill {
+//       margin-top: 8px;
+//       display: inline-flex; align-items: center; gap: 6px;
+//       background: $warning; color: white;
+//       padding: 4px 10px; border-radius: 20px;
+//       font-size: 0.75rem; font-weight: 700;
+//       animation: pulse 2s infinite;
+//     }
+
+//     .action-arrow {
+//       opacity: 1;
+//       transform: translateX(0);
+//     }
+//   }
+
+//   /* Flecha oculta por defecto */
+//   .action-arrow {
+//     position: absolute; right: 20px;
+//     color: $warning;
+//     opacity: 0;
+//     transform: translateX(-10px);
+//     transition: all 0.3s ease;
+//   }
+// }
+
+// /* SECCIÓN GESTIÓN */
+// .management-section {
+//   margin-top: 1rem;
+
+//   .section-header {
+//     display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;
+//     h3 { margin: 0; font-size: 1.5rem; color: $text-dark; font-weight: 800; }
+//     .badge-count { background: #e2e8f0; color: $text-muted; font-size: 0.8rem; padding: 2px 8px; border-radius: 12px; font-weight: 700; }
+//   }
+// }
+
+// /* TOOLBAR (Filtros y Búsqueda) - MEJORADO MOBILE */
+// .toolbar-card {
+//   background: white; padding: 1rem; border-radius: 16px;
+//   box-shadow: 0 2px 8px rgba(0,0,0,0.03); border: 1px solid #e2e8f0;
+//   display: flex; justify-content: space-between; align-items: center;
+//   flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem;
+
+//   /* MOBILE: Apilar todo verticalmente */
+//   @media (max-width: 768px) {
+//     flex-direction: column;
+//     align-items: stretch;
+//     gap: 0.8rem;
+//   }
+
+//   .search-wrapper {
+//     position: relative; flex: 1; min-width: 280px;
+    
+//     /* En móvil, el buscador ocupa todo */
+//     @media (max-width: 768px) { min-width: 100%; }
+
+//     .search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #94a3b8; }
+    
+//     input {
+//       width: 100%; padding: 12px 12px 12px 40px;
+//       border: 1px solid #e2e8f0; border-radius: 10px;
+//       font-size: 0.95rem; outline: none; transition: all 0.2s;
+      
+//       @media (max-width: 768px) { font-size: 16px; } /* Evitar zoom iOS */
+      
+//       &:focus { border-color: $primary; box-shadow: 0 0 0 3px rgba($primary, 0.1); }
+//     }
+//   }
+
+//   .filters-group {
+//     display: flex; gap: 10px; flex-wrap: wrap;
+    
+//     /* En móvil, grid para distribuir filtros y botón sort */
+//     @media (max-width: 768px) {
+//       width: 100%;
+//       display: grid;
+//       grid-template-columns: 1fr 1fr auto; 
+//     }
+
+//     .select-wrapper {
+//       @media (max-width: 768px) { width: 100%; }
+
+//       select {
+//         width: 100%;
+//         appearance: none; background: #f8fafc; border: 1px solid #e2e8f0;
+//         padding: 10px 30px 10px 14px; border-radius: 10px;
+//         font-weight: 600; color: $text-dark; font-size: 0.9rem; cursor: pointer;
+//         background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2364748b%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+//         background-repeat: no-repeat; background-position: right 10px top 50%; background-size: 10px auto;
+        
+//         &:focus { border-color: $primary; background-color: white; }
+//       }
+//     }
+//   }
+// }
+
+// /* BOTÓN SORT */
+// .btn-icon-sort {
+//   display: flex; align-items: center; justify-content: center; gap: 8px;
+//   background: white; border: 1px solid #e2e8f0;
+//   height: 42px; width: 42px; border-radius: 10px;
+//   cursor: pointer; color: #64748b; font-weight: 600; font-size: 0.9rem;
+//   transition: all 0.2s;
+
+//   @media (min-width: 768px) {
+//     width: auto; padding: 0 16px;
+//   }
+
+//   &:hover, &:active {
+//     border-color: $primary; color: $primary; background: #eff6ff;
+//   }
+
+//   .sort-label {
+//     display: none;
+//     @media (min-width: 768px) { display: inline; }
+//   }
+// }
+
+// /* TABLA (Ajustes Mobile y Visuales) */
+// .table-card {
+//   background: $bg-card;
+//   border-radius: 16px;
+//   border: 1px solid #e2e8f0;
+//   overflow: hidden;
+//   box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+// }
+
+// .table-responsive {
+//   width: 100%;
+//   overflow-x: auto; /* Scroll horizontal */
+  
+//   /* 👇 NUEVO: SCROLL VERTICAL */
+//   max-height: 600px; /* Altura máxima antes de scrollear */
+//   overflow-y: auto;  /* Activa scroll vertical */
+  
+//   /* Suavidad en móviles */
+//   -webkit-overflow-scrolling: touch; 
+// }
+
+// .modern-table {
+//   width: 100%; border-collapse: collapse;
+//   min-width: 800px; /* Evita que la tabla se rompa en mobile */
+
+//   th {
+//     text-align: left; 
+//     padding: 1.2rem 1.5rem;
+//     background: #f8fafc; 
+//     color: $text-muted;
+//     font-size: 0.8rem; 
+//     font-weight: 700; 
+//     text-transform: uppercase;
+//     letter-spacing: 0.5px;
+    
+//     /* 👇 NUEVO: HEADER FIJO */
+//     position: sticky;
+//     top: 0;
+//     z-index: 10; /* Para que quede por encima de las filas */
+    
+//     /* Truquito visual: Sombra suave abajo para separar del contenido al scrollear */
+//     box-shadow: 0 1px 0 #e2e8f0; 
+//   }
+
+//   td {
+//     padding: 1rem 1.5rem;
+//     border-bottom: 1px solid #f1f5f9;
+//     color: $text-dark; vertical-align: middle;
+//   }
+
+//   tr:last-child td { border-bottom: none; }
+
+//   .clickable-row {
+//     cursor: pointer; transition: background 0.1s;
+//     &:hover, &:active {
+//       background: #fcfcfc;
+//       /* Al interactuar, la flecha se pone full opaca */
+//       .arrow-icon { opacity: 1; transform: translateX(0); }
+//     }
+//   }
+
+//   /* --- CELDAS ESPECÍFICAS --- */
+//   .code-badge {
+//     font-family: monospace; font-weight: 600; color: $primary;
+//     background: #eff6ff; padding: 4px 8px; border-radius: 6px;
+//   }
+
+//   .date-sub { font-size: 0.75rem; color: $text-muted; margin-top: 2px; }
+
+//   .client-mini {
+//     display: flex; flex-direction: column;
+//     .font-bold { font-weight: 600; }
+//     .dni-muted { font-size: 0.8rem; color: $text-muted; }
+//   }
+
+//   .role-pill {
+//     font-size: 0.8rem; font-weight: 600; padding: 4px 10px; border-radius: 6px;
+//     background: #f1f5f9; color: $text-muted;
+    
+//     &.conductor { background: #eff6ff; color: $primary; }
+//     &.acompanante { background: #ecfdf5; color: $success; }
+//     &.peaton { background: #fff7ed; color: $warning; }
+//   }
+
+//   .tercero-info {
+//     display: flex; flex-direction: column;
+//     .company { font-weight: 600; font-size: 0.9rem; }
+//     .plate { font-family: monospace; font-size: 0.8rem; background: #f1f5f9; padding: 2px 6px; border-radius: 4px; width: fit-content; margin-top: 2px; }
+//   }
+
+//   .status-pill {
+//     padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase;
+//     background: #f1f5f9; color: $text-muted;
+    
+//     &.Enviado { background: #eff6ff; color: $primary; }
+//     &.Recepcionado { background: #f0fdf4; color: $success; }
+//     &.Iniciado { background-color: rgba(#0ea5e9, 0.1); color: #0ea5e9; border: 1px solid rgba(#0ea5e9, 0.2); }
+//     &.Negociacion { background-color: rgba($warning, 0.1); color: darken($warning, 10%); border: 1px solid rgba($warning, 0.2); }
+//     &.Indemnizando { background-color: rgba(#14b8a6, 0.1); color: #0d9488; border: 1px solid rgba(#14b8a6, 0.2); }
+//     &.Indemnizado { background-color: rgba($success, 0.1); color: $success; border: 1px solid rgba($success, 0.2); }
+//     &.Rechazado { background: #fef2f2; color: $danger; }
+//   }
+
+//   /* --- FIX FLECHA VISIBLE --- */
+//   .arrow-icon {
+//     color: $primary;
+//     opacity: 0.5; /* Visible por defecto */
+//     transition: opacity 0.2s;
+//   }
+// }
+
+// /* --- ANIMACIONES & LOADING --- */
+// .fade-in { animation: fadeIn 0.5s ease-out; }
+// @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+// @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.8; } 100% { opacity: 1; } }
+
+// .loading-state { padding: 4rem; text-align: center; color: $text-muted; }
+// .spinner { width: 30px; height: 30px; border: 3px solid #e2e8f0; border-top-color: $primary; border-radius: 50%; animation: spin 1s infinite linear; margin: 0 auto 1rem; }
+// @keyframes spin { to { transform: rotate(360deg); } }
+// .empty-state { padding: 3rem; text-align: center; color: $text-muted; font-style: italic; }
+
+// .btn-action.delete {
+//   color: #94a3b8; /* Gris por defecto */
+//   background: transparent;
+//   border: none;
+//   cursor: pointer;
+//   padding: 6px;
+//   border-radius: 8px;
+//   transition: all 0.2s;
+
+//   svg {
+//     width: 20px;
+//     height: 20px;
+//   }
+
+//   &:hover {
+//     color: #ef4444; /* Rojo Danger */
+//     background: rgba(239, 68, 68, 0.1);
+//   }
+// }
+
+// /* Contenedor flexible para alinear los iconos al final de la fila */
+// .action-cell {
+//   display: flex;
+//   align-items: center;
+//   justify-content: flex-end;
+//   gap: 12px;
+//   height: 100%; /* Obliga al div a centrarse verticalmente con el resto de la fila */
+// }
+
+// /* Ajuste sutil para que la flecha y el basurero convivan en armonía */
+// .action-cell .arrow-icon {
+//   color: #94a3b8;
+//   transition: transform 0.2s, color 0.2s;
+// }
+
+// /* Efecto hover general de la fila afecta a la flecha pero no interfiere con el basurero */
+// .clickable-row:hover .action-cell .arrow-icon {
+//   color: #3b82f6;
+//   transform: translateX(3px);
+// }

@@ -1,0 +1,154 @@
+<div class="min-h-screen flex flex-col lg:flex-row bg-[#030712] text-slate-50 font-sans selection:bg-indigo-500/30 pt-20 lg:pt-0">
+
+  <aside class="relative w-full lg:w-[360px] xl:w-[400px] border-b lg:border-b-0 lg:border-r border-white/10 bg-white/[0.02] backdrop-blur-md p-8 lg:p-10 flex flex-col justify-center overflow-hidden shrink-0 lg:pt-20">
+    <div class="absolute top-1/4 left-[-20%] w-[300px] h-[300px] bg-indigo-500/20 blur-[100px] rounded-full pointer-events-none"></div>
+    
+    <div class="relative z-10">
+      <h2 class="text-3xl lg:text-4xl font-extrabold tracking-tight text-white mb-4">Seguimiento en Vivo</h2>
+      <p class="text-slate-400 text-[15px] leading-relaxed mb-10">
+        Ingresá tus datos para ver el estado de tu expediente en tiempo real. Transparencia total, las 24 horas del día.
+      </p>
+      
+      <div class="flex items-start gap-3 bg-indigo-500/10 border border-indigo-500/20 p-4 rounded-2xl">
+        <svg class="w-6 h-6 text-indigo-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" /></svg>
+        <div>
+          <strong class="block text-white mb-1">Conexión Segura</strong>
+          <span class="text-sm text-indigo-300/80">Tus datos están encriptados bajo el respaldo del Sindicato de Motos.</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="flex-1 relative overflow-y-auto p-6 lg:p-12 xl:p-16 lg:pt-32 flex items-center justify-center">
+    <div class="max-w-2xl mx-auto w-full">
+
+      <div *ngIf="!resultado" class="animate-fade-in w-full max-w-md mx-auto">
+        <div class="text-center mb-10">
+          <div class="w-16 h-16 bg-white/[0.02] border border-white/10 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-black/50">
+            <svg class="w-8 h-8 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" /></svg>
+          </div>
+          <h3 class="text-2xl md:text-3xl font-bold text-white mb-2">Consultar Expediente</h3>
+          <p class="text-slate-400">Ingresá tus credenciales para acceder.</p>
+        </div>
+
+        <form [formGroup]="consultaForm" (ngSubmit)="onSubmit()" class="space-y-5">
+          <div>
+            <label class="block text-sm font-medium text-slate-400 mb-2">Tu DNI / CUIT</label>
+            <input type="tel" formControlName="dni" placeholder="Ej: 35123456" maxlength="11" class="w-full bg-slate-900/50 border border-slate-800 rounded-xl px-4 py-3.5 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors backdrop-blur-sm">
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-slate-400 mb-2">Código de Seguimiento</label>
+            <input type="text" formControlName="codigo" placeholder="Ej: A1B2C3" maxlength="10" class="w-full bg-slate-900/50 border border-slate-800 rounded-xl px-4 py-3.5 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 uppercase transition-colors backdrop-blur-sm">
+          </div>
+          
+          <button type="submit" [disabled]="consultaForm.invalid || isLoading" class="btn w-full bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-600/20 disabled:opacity-50 disabled:cursor-not-allowed mt-4">
+            <span *ngIf="!isLoading">Consultar Estado</span>
+            <svg *ngIf="isLoading" class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+          </button>
+
+          <div *ngIf="consultaForm.touched && consultaForm.invalid" class="text-center text-sm text-red-400 font-medium">
+            Por favor completá ambos campos.
+          </div>
+        </form>
+
+        <div *ngIf="errorMensaje" class="mt-6 bg-red-500/10 border border-red-500/20 text-red-400 text-center p-4 rounded-xl text-sm font-medium animate-fade-in">
+          {{ errorMensaje }}
+        </div>
+      </div>
+
+      <div *ngIf="resultado" class="animate-fade-in w-full">
+        
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pb-6 border-b border-white/10">
+          <div>
+            <span class="text-xs font-bold text-slate-500 tracking-wider uppercase mb-1 block">Expediente N°</span>
+            <span class="text-2xl font-mono font-bold text-white">{{ resultado.codigo_seguimiento }}</span>
+          </div>
+          <div class="sm:text-right">
+            <span class="text-xs font-bold text-slate-500 tracking-wider uppercase mb-1 block">Última Act.</span>
+            <span class="text-slate-300">{{ (resultado.updatedAt || resultado.fecha_creacion) | date:'dd/MM/yyyy HH:mm' }}</span>
+          </div>
+        </div>
+
+        <div class="rounded-3xl border border-white/10 p-8 mb-10 flex items-center gap-6" [ngClass]="claseEstado === 'estado-success' ? 'bg-emerald-500/10 border-emerald-500/30' : (claseEstado === 'estado-danger' ? 'bg-red-500/10 border-red-500/30' : 'bg-indigo-500/10 border-indigo-500/30')">
+          <div class="w-16 h-16 rounded-2xl flex items-center justify-center shrink-0" [ngClass]="claseEstado === 'estado-success' ? 'bg-emerald-500/20 text-emerald-400' : (claseEstado === 'estado-danger' ? 'bg-red-500/20 text-red-400' : 'bg-indigo-500/20 text-indigo-400')">
+            <svg *ngIf="['Enviado', 'Recepcionado'].includes(resultado.estado)" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" /></svg>
+            <svg *ngIf="['Iniciado', 'Negociacion'].includes(resultado.estado)" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            <svg *ngIf="['Indemnizando', 'Indemnizado'].includes(resultado.estado)" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" /></svg>
+            <svg *ngIf="resultado.estado === 'Rechazado'" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" /></svg>
+          </div>
+          <div>
+            <span class="block text-sm font-semibold mb-1" [ngClass]="claseEstado === 'estado-success' ? 'text-emerald-500' : (claseEstado === 'estado-danger' ? 'text-red-500' : 'text-indigo-400')">Estado Actual</span>
+            <h2 class="text-3xl font-extrabold text-white tracking-tight">{{ resultado.estado }}</h2>
+          </div>
+        </div>
+
+        <div class="mb-10 bg-slate-900 border border-slate-800 rounded-3xl overflow-hidden" *ngIf="resultado.mensajes && resultado.mensajes.length > 0">
+          <div class="bg-slate-800/50 px-6 py-4 border-b border-slate-800 flex items-center gap-2 text-sm font-bold text-white tracking-wide">
+            <svg class="w-5 h-5 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+            NOVEDADES LEGALES
+          </div>
+          <div class="p-2">
+            <div class="px-4 py-3 border-b border-slate-800/50 last:border-0 flex gap-4" *ngFor="let msg of resultado.mensajes">
+              <div class="text-xs font-mono text-slate-500 pt-1 shrink-0">{{ msg.fecha | date:'dd/MM' }}</div>
+              <div class="text-[15px] text-slate-300 leading-relaxed">{{ msg.texto }}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hidden md:block mb-12 relative px-4">
+          <div class="absolute top-[24px] left-[32px] right-[32px] h-[2px] bg-slate-800 rounded-full"></div>
+          <div class="absolute top-[24px] left-[32px] h-[2px] rounded-full transition-all duration-1000 ease-out" [style.width]="getProgressWidth()" [ngClass]="resultado.estado === 'Rechazado' ? 'bg-red-500' : 'bg-indigo-500'"></div>
+
+          <div class="relative flex justify-between">
+            <div *ngFor="let paso of pasosTimeline; let i = index" class="flex flex-col items-center w-20 relative group">
+              <div class="w-12 h-12 rounded-full border-4 flex items-center justify-center bg-[#030712] z-10 transition-colors duration-500 mb-3"
+                   [ngClass]="i < pasoActual ? 'border-indigo-500' : (i === pasoActual ? (resultado.estado === 'Rechazado' ? 'border-red-500' : 'border-indigo-500 shadow-[0_0_15px_rgba(99,102,241,0.5)]') : 'border-slate-800')">
+                <svg *ngIf="i < pasoActual" class="w-5 h-5 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                <svg *ngIf="resultado.estado === 'Rechazado' && i === pasosTimeline.length - 1" class="w-5 h-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                <div *ngIf="i === pasoActual && resultado.estado !== 'Rechazado'" class="w-3 h-3 rounded-full bg-indigo-500 animate-pulse"></div>
+              </div>
+              <span class="text-xs text-center font-semibold tracking-wide"
+                    [ngClass]="i <= pasoActual ? (resultado.estado === 'Rechazado' && i === pasosTimeline.length - 1 ? 'text-red-400' : 'text-white') : 'text-slate-500'">
+                <ng-container *ngIf="resultado.estado === 'Rechazado' && i === pasosTimeline.length - 1">Rechazado</ng-container>
+                <ng-container *ngIf="!(resultado.estado === 'Rechazado' && i === pasosTimeline.length - 1)">{{ paso.label }}</ng-container>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="block md:hidden mb-12 relative pl-8 pr-4 space-y-6">
+          <div class="absolute left-[19px] top-3 bottom-3 w-[2px] bg-slate-800 rounded-full"></div>
+          
+          <div *ngFor="let paso of pasosTimeline; let i = index" class="flex items-center gap-5 relative z-10">
+            <div class="w-10 h-10 rounded-full border-4 flex items-center justify-center bg-[#030712] shrink-0 transition-colors duration-500"
+                 [ngClass]="i < pasoActual ? 'border-indigo-500' : (i === pasoActual ? (resultado.estado === 'Rechazado' ? 'border-red-500' : 'border-indigo-500 shadow-[0_0_15px_rgba(99,102,241,0.4)]') : 'border-slate-800')">
+              
+              <svg *ngIf="i < pasoActual" class="w-4 h-4 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+              <svg *ngIf="resultado.estado === 'Rechazado' && i === pasosTimeline.length - 1" class="w-4 h-4 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+              <div *ngIf="i === pasoActual && resultado.estado !== 'Rechazado'" class="w-2.5 h-2.5 rounded-full bg-indigo-400 animate-pulse"></div>
+            </div>
+            
+            <div class="flex flex-col">
+              <span class="text-[15px] font-semibold tracking-wide transition-colors"
+                    [ngClass]="i <= pasoActual ? (resultado.estado === 'Rechazado' && i === pasosTimeline.length - 1 ? 'text-red-400' : 'text-white') : 'text-slate-500'">
+                <ng-container *ngIf="resultado.estado === 'Rechazado' && i === pasosTimeline.length - 1">Rechazado</ng-container>
+                <ng-container *ngIf="!(resultado.estado === 'Rechazado' && i === pasosTimeline.length - 1)">{{ paso.label }}</ng-container>
+              </span>
+              <span class="text-xs text-slate-500" *ngIf="i === pasoActual && resultado.estado !== 'Rechazado'">Etapa en curso</span>
+              <span class="text-xs text-indigo-400/70" *ngIf="i < pasoActual">Completado</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-center pt-8 border-t border-white/10">
+          <button (click)="resetForm()" class="text-sm font-semibold text-slate-400 hover:text-white transition-colors underline underline-offset-4">
+            Consultar otro expediente
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+</div>

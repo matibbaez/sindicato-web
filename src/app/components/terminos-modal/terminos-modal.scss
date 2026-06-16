@@ -1,0 +1,213 @@
+/* VARIABLES */
+$bg-dark: #0f172a;
+$primary: #3b82f6;
+$primary-dark: #2563eb;
+$text-main: #1e293b;
+$text-muted: #64748b;
+$border-light: #e2e8f0;
+
+/* =========================================
+   BACKDROP & CARD BASE
+   ========================================= */
+.modal-backdrop {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background-color: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(4px); /* Blur un poco más suave */
+  z-index: 9999;
+  
+  display: flex;
+  justify-content: center;
+  align-items: center; /* SIEMPRE CENTRADO (Desktop y Mobile) */
+  padding: 1rem;
+  
+  opacity: 0;
+  animation: fadeIn 0.3s forwards;
+}
+
+.modal-card {
+  background: white;
+  width: 100%;
+  max-width: 500px; /* Un poco más compacto en Desktop */
+  max-height: 85vh; 
+  border-radius: 20px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  
+  transform: scale(0.95);
+  opacity: 0;
+  animation: popIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* =========================================
+   1. HEADER
+   ========================================= */
+.modal-header {
+  padding: 1.25rem 1.5rem; /* Padding ajustado */
+  border-bottom: 1px solid $border-light;
+  background: white;
+  
+  .header-title {
+    display: flex; align-items: center; gap: 12px;
+    
+    .icon-circle {
+        width: 32px; height: 32px; 
+        background: #eff6ff; color: $primary;
+        border-radius: 50%; display: flex; align-items: center; justify-content: center;
+        svg { width: 20px; height: 20px; }
+    }
+
+    h2 { 
+      font-size: 1.15rem; color: $text-main; margin: 0; 
+      font-weight: 700; letter-spacing: -0.01em; 
+    }
+  }
+}
+
+/* =========================================
+   2. BODY
+   ========================================= */
+.modal-body {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1; 
+  overflow: hidden;
+
+  .intro-text {
+    font-size: 0.95rem; color: $text-main; margin-bottom: 1rem; 
+    line-height: 1.5; flex-shrink: 0;
+    
+    strong { color: $primary; }
+  }
+}
+
+/* CAJA SCROLL */
+.legal-scroll-container {
+  background-color: #f8fafc;
+  border: 1px solid $border-light;
+  border-radius: 12px;
+  flex: 1; 
+  overflow-y: auto;
+  margin-bottom: 1.25rem;
+  padding: 0.5rem;
+
+  .legal-content {
+    padding: 0.75rem;
+    
+    .legal-item {
+      margin-bottom: 1rem;
+      &:last-child { margin-bottom: 0; }
+
+      h4 {
+        font-size: 0.8rem; font-weight: 700; color: $text-main; 
+        margin: 0 0 0.25rem 0; text-transform: uppercase; letter-spacing: 0.03em;
+      }
+      p { font-size: 0.9rem; color: #475569; line-height: 1.4; margin: 0; }
+    }
+  }
+
+  &::-webkit-scrollbar { width: 4px; }
+  &::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+}
+
+/* ALERTA */
+.consent-alert {
+  display: flex; align-items: flex-start; gap: 10px;
+  background-color: #ecfdf5; 
+  border: 1px solid #a7f3d0;
+  padding: 0.85rem; border-radius: 10px; 
+  flex-shrink: 0;
+
+  .icon-box { 
+    color: #059669; 
+    svg { width: 18px; height: 18px; margin-top: 2px; } 
+  }
+  p { font-size: 0.8rem; color: #065f46; margin: 0; font-weight: 500; line-height: 1.35; }
+}
+
+/* =========================================
+   3. FOOTER
+   ========================================= */
+.modal-footer {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid $border-light;
+  background-color: white;
+  display: flex; justify-content: flex-end; gap: 0.75rem;
+}
+
+/* BOTONES */
+.btn-cancel {
+  background: transparent; border: none; color: $text-muted;
+  padding: 0.7rem 1.2rem; font-weight: 600; cursor: pointer; 
+  border-radius: 10px; font-size: 0.9rem;
+  &:hover { background: #f1f5f9; color: $text-main; }
+}
+
+.btn-accept {
+  background: $primary; color: white; border: none;
+  padding: 0.7rem 1.5rem; border-radius: 10px; font-weight: 600;
+  cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 0.95rem;
+  box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.4); 
+  
+  &:hover { background: $primary-dark; transform: translateY(-1px); }
+  svg { width: 18px; height: 18px; }
+}
+
+/* =========================================
+   ANIMACIONES
+   ========================================= */
+@keyframes fadeIn { to { opacity: 1; } }
+@keyframes popIn { 
+  to { opacity: 1; transform: scale(1); } 
+}
+
+/* =========================================
+   MOBILE OPTIMIZATION
+   ========================================= */
+@media (max-width: 600px) {
+  .modal-backdrop {
+    /* Mantenemos el centrado, no "flex-end" */
+    padding: 1.5rem; 
+  }
+
+  .modal-card {
+    /* Ajuste de tamaño para que no se vea GIGANTE */
+    width: 100%;
+    max-height: 80vh; /* Dejamos aire arriba y abajo */
+    border-radius: 16px; /* Bordes un poco menos agresivos */
+    
+    /* Animación Pop In (igual que desktop, mejor que slide up para modales centrados) */
+    animation: popInMobile 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  @keyframes popInMobile {
+    from { opacity: 0; transform: scale(0.9) translateY(10px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .modal-header { padding: 1rem 1.25rem; }
+  .modal-body { padding: 1rem 1.25rem; }
+  
+  .legal-scroll-container {
+    margin-bottom: 1rem;
+    max-height: 35vh; /* Limitamos altura interna para asegurar footer visible */
+  }
+
+  .modal-footer {
+    padding: 1rem 1.25rem;
+    flex-direction: column-reverse; /* Botones apilados */
+    gap: 0.75rem;
+
+    button { 
+      width: 100%; 
+      justify-content: center; 
+      padding: 0.9rem; /* Botón dedo-friendly */
+    }
+    
+    .btn-cancel { padding: 0.6rem; }
+  }
+}

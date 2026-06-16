@@ -1,0 +1,126 @@
+<!-- CONTENEDOR PRINCIPAL (pt-28 para esquivar el Navbar) -->
+<div class="min-h-screen bg-[#030712] text-slate-50 font-sans selection:bg-indigo-500/30 pt-28 pb-12 px-4 lg:px-8 relative overflow-hidden">
+  
+  <!-- Glow de fondo -->
+  <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-indigo-600/15 blur-[120px] rounded-full pointer-events-none"></div>
+
+  <!-- Validamos que el usuario exista y lo guardamos en la variable local 'user' -->
+  <div class="max-w-5xl mx-auto relative z-10 animate-fade-in" *ngIf="authService.currentUserValue as user">
+    
+    <!-- HEADER -->
+    <header class="mb-8 border-b border-white/10 pb-6 flex flex-col md:flex-row md:items-end justify-between gap-4">
+      <div>
+        <h1 class="text-3xl lg:text-4xl font-extrabold text-white tracking-tight mb-2">Mi Perfil</h1>
+        <p class="text-slate-400 text-sm md:text-base">Gestioná tu información personal y credenciales de seguridad.</p>
+      </div>
+    </header>
+
+    <!-- GRID DE PERFIL (1 Columna en Mobile, 3 Columnas en Desktop) -->
+    <div class="grid lg:grid-cols-3 gap-6 lg:gap-8">
+      
+      <!-- ========================================== -->
+      <!-- TARJETA 1: DATOS DE LA CUENTA (Columna 1)  -->
+      <!-- ========================================== -->
+      <div class="lg:col-span-1">
+        <div class="bg-white/[0.02] border border-white/10 rounded-3xl p-6 md:p-8 backdrop-blur-sm shadow-xl h-full flex flex-col">
+          
+          <!-- Avatar Autogenerado (Con fallback seguro por si no hay nombre) -->
+          <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-indigo-500/20 to-blue-500/20 text-indigo-400 flex items-center justify-center text-4xl font-extrabold mb-6 border border-indigo-500/30 shadow-inner">
+            {{ (user?.nombre || 'U').charAt(0) | uppercase }}
+          </div>
+          
+          <!-- Info Personal -->
+          <h3 class="text-2xl font-bold text-white mb-1 tracking-tight">{{ user?.nombre || 'Usuario Registrado' }}</h3>
+          <p class="text-slate-400 mb-8 flex items-center gap-2">
+            <svg class="w-4 h-4 text-slate-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+            <span class="truncate">{{ user?.email || 'Sin email' }}</span>
+          </p>
+          
+          <!-- Etiqueta de Rol -->
+          <div class="border-t border-white/10 pt-6 mt-auto">
+            <span class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">Rol Asignado</span>
+            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold tracking-wide uppercase bg-white/5 border border-white/10 text-slate-300"
+                  [ngClass]="{
+                    '!bg-indigo-500/10 !text-indigo-400 !border-indigo-500/20': user?.role === 'Admin',
+                    '!bg-emerald-500/10 !text-emerald-400 !border-emerald-500/20': user?.role === 'Tramitador'
+                  }">
+              <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+              {{ user?.role || 'Usuario' }}
+            </span>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ========================================== -->
+      <!-- TARJETA 2: SEGURIDAD (Columnas 2 y 3)      -->
+      <!-- ========================================== -->
+      <div class="lg:col-span-2">
+        <div class="bg-white/[0.02] border border-white/10 rounded-3xl p-6 md:p-8 backdrop-blur-sm shadow-xl h-full">
+          
+          <!-- Encabezado de la Tarjeta -->
+          <div class="flex items-center gap-3 mb-8 border-b border-white/10 pb-6">
+            <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-500 border border-amber-500/20 flex items-center justify-center shrink-0">
+              <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold text-white tracking-tight">Seguridad de la Cuenta</h3>
+              <p class="text-sm text-slate-400 mt-0.5">Actualizá tu contraseña para mantener tu acceso protegido.</p>
+            </div>
+          </div>
+
+          <!-- Formulario de Contraseña -->
+          <form [formGroup]="passwordForm" (ngSubmit)="cambiarPassword()">
+            
+            <div class="grid md:grid-cols-2 gap-6 mb-8">
+              
+              <div class="w-full">
+                <label class="block text-sm font-medium text-slate-400 mb-2">Contraseña Actual <span class="text-indigo-400">*</span></label>
+                <input type="password" formControlName="passwordActual" placeholder="Ingresá tu contraseña actual" 
+                       class="w-full bg-[#0f172a] border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors">
+              </div>
+              
+              <div class="w-full">
+                <label class="block text-sm font-medium text-slate-400 mb-2">Nueva Contraseña <span class="text-indigo-400">*</span></label>
+                <input type="password" formControlName="passwordNueva" placeholder="Ej: Seguridad2026" 
+                       class="w-full bg-[#0f172a] border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors">
+                
+                <p class="text-xs text-slate-500 mt-2 ml-1">Mínimo 8 caracteres, 1 mayúscula y 1 número.</p>
+
+                <div class="mt-3 text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-lg p-3 animate-fade-in" *ngIf="passwordForm.get('passwordNueva')?.touched && passwordForm.get('passwordNueva')?.invalid">
+                  <span class="flex items-center gap-1.5" *ngIf="passwordForm.get('passwordNueva')?.errors?.['required']">
+                    <svg class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    La nueva contraseña es obligatoria.
+                  </span>
+                  <span class="flex items-center gap-1.5" *ngIf="passwordForm.get('passwordNueva')?.errors?.['minlength']">
+                    <svg class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    Mínimo 8 caracteres.
+                  </span>
+                  <span class="flex items-center gap-1.5 mt-1" *ngIf="passwordForm.get('passwordNueva')?.errors?.['pattern']">
+                    <svg class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    Falta mayúscula o número.
+                  </span>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="pt-6 border-t border-white/10 flex justify-end">
+              <button type="submit" [disabled]="passwordForm.invalid || isLoading" 
+                      class="btn w-full md:w-auto px-8 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3.5 rounded-xl shadow-lg shadow-indigo-600/20 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2">
+                
+                <svg *ngIf="!isLoading" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                <span *ngIf="!isLoading">Actualizar Contraseña</span>
+                
+                <svg *ngIf="isLoading" class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                <span *ngIf="isLoading">Actualizando...</span>
+              </button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

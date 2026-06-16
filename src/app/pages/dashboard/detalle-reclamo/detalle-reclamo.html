@@ -1,0 +1,401 @@
+<div *ngIf="isLoading()" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#030712]/90 backdrop-blur-sm">
+  <div class="w-12 h-12 border-4 border-indigo-500/20 border-t-indigo-500 rounded-full animate-spin mb-4"></div>
+  <p class="text-indigo-400 font-medium tracking-wide">Cargando expediente...</p>
+</div>
+
+<div class="min-h-screen bg-[#030712] text-slate-50 font-sans selection:bg-indigo-500/30 pt-24 pb-12 px-4 lg:px-8 relative overflow-hidden" *ngIf="!isLoading() && reclamo() as r">
+  
+  <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-indigo-600/15 blur-[120px] rounded-full pointer-events-none"></div>
+
+  <div class="max-w-7xl mx-auto relative z-10">
+
+    <header class="mb-8 animate-fade-in">
+      
+      <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+        <button (click)="volver()" class="inline-flex items-center gap-2 text-sm font-semibold text-slate-400 hover:text-white transition-colors group focus:outline-none">
+          <svg class="w-5 h-5 group-hover:-translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" /></svg>
+          Volver
+        </button>
+        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs text-slate-300 font-medium">
+          <svg class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+          Ingreso: {{ r.fecha_creacion | date:'dd/MM/yyyy' }}
+        </div>
+      </div>
+
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 bg-white/[0.02] border border-white/10 p-6 md:p-8 rounded-3xl backdrop-blur-sm shadow-xl">
+        <div>
+          <h1 class="text-3xl md:text-4xl font-extrabold text-white tracking-tight mb-3">{{ r.nombre }}</h1>
+          <div class="flex flex-wrap items-center gap-3">
+            <span class="font-mono text-lg font-bold text-indigo-400 bg-indigo-500/10 px-3 py-1 rounded-lg border border-indigo-500/20">
+              #{{ r.codigo_seguimiento }}
+            </span>
+            <span class="px-3 py-1 rounded-lg text-sm font-bold border uppercase tracking-wider"
+                  [ngClass]="{
+                    'bg-indigo-500/10 text-indigo-400 border-indigo-500/20': r.rol_victima === 'Conductor',
+                    'bg-blue-500/10 text-blue-400 border-blue-500/20': r.rol_victima === 'Acompanante',
+                    'bg-cyan-500/10 text-cyan-400 border-cyan-500/20': r.rol_victima === 'Peaton'
+                  }">
+              {{ r.rol_victima === 'Acompanante' ? 'Acompañante' : r.rol_victima }}
+            </span>
+          </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 bg-slate-900/60 border border-white/5 p-4 rounded-2xl shrink-0">
+          <div class="font-sans">
+            <span class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-0.5">Celular del Cliente</span>
+            <span class="text-lg font-bold text-emerald-400 tracking-wide font-mono">{{ r.telefono }}</span>
+          </div>
+          <button class="btn bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg shadow-emerald-600/20 w-full sm:w-auto" *ngIf="r.telefono" (click)="contactarWhatsApp()">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 00-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.462 0 .025 5.462.025 12.046c0 2.106.549 4.162 1.593 5.981L0 24l6.125-1.606a11.84 11.84 0 005.922 1.59h.005c6.586 0 12.025-5.462 12.025-12.046a11.82 11.82 0 00-3.484-8.435"/></svg>
+            <span>Enviar Mensaje</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="mt-6 bg-white/[0.02] border border-white/10 rounded-2xl p-5 backdrop-blur-sm" *ngIf="r.estado !== 'Rechazado'">
+        <div class="overflow-x-auto pb-2 md:pb-0 scrollbar-none">
+          <div class="relative flex justify-between items-center min-w-[640px] md:min-w-0 px-4">
+            
+            <div class="absolute top-[14px] left-[20px] right-[20px] h-[3px] bg-slate-800 rounded-full z-0"></div>
+            <div class="absolute top-[14px] left-[20px] h-[3px] bg-indigo-500 rounded-full z-0 transition-all duration-1000" [style.width.%]="(indiceProgreso() / (pasosTimeline.length - 1)) * 100"></div>
+            
+            <div *ngFor="let paso of pasosTimeline; let i = index" class="flex flex-col items-center relative z-10">
+              <div class="w-8 h-8 rounded-full border-4 flex items-center justify-center bg-[#030712] transition-all duration-500 mb-2"
+                   [ngClass]="i <= indiceProgreso() ? 'border-indigo-500 text-indigo-400' : 'border-slate-800 text-slate-600'">
+                <svg *ngIf="i < indiceProgreso()" class="w-4 h-4 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                <div *ngIf="i === indiceProgreso()" class="w-2 h-2 rounded-full bg-indigo-400 animate-pulse"></div>
+              </div>
+              <span class="text-[11px] font-bold tracking-wide uppercase" [ngClass]="i <= indiceProgreso() ? 'text-white' : 'text-slate-500'">{{ paso.label }}</span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-6 bg-red-500/10 border border-red-500/20 text-red-400 p-6 rounded-2xl flex items-center gap-4 animate-fade-in" *ngIf="r.estado === 'Rechazado'">
+        <svg class="w-8 h-8 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+        <div>
+          <strong class="block text-lg mb-1 text-white">Expediente Rechazado</strong>
+          <p class="text-sm">Este trámite ha sido cerrado sin derecho a indemnización.</p>
+        </div>
+      </div>
+
+    </header>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+      <div class="lg:col-span-2 space-y-8">
+        
+        <section class="bg-white/[0.02] border border-white/10 rounded-3xl overflow-hidden backdrop-blur-sm" *ngIf="r.fecha_hecho || r.lugar_hecho">
+          <div class="bg-white/5 border-b border-white/10 px-6 py-4 flex items-center gap-3">
+            <svg class="w-5 h-5 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+            <h3 class="text-lg font-bold text-white tracking-tight">Detalles del Siniestro</h3>
+          </div>
+          
+          <div class="p-6 md:p-8 space-y-6">
+            <div class="grid sm:grid-cols-2 gap-6">
+              <div *ngIf="r.lugar_hecho">
+                <span class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Lugar del Hecho</span>
+                <p class="text-[15px] text-white">{{ r.lugar_hecho }} <span class="text-slate-400" *ngIf="r.localidad">({{ r.localidad }})</span></p>
+              </div>
+              <div *ngIf="r.fecha_hecho">
+                <span class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Fecha y Hora</span>
+                <p class="text-[15px] text-white">{{ r.fecha_hecho | date:'dd/MM/yyyy' }} <span class="text-slate-400" *ngIf="r.hora_hecho">- {{ r.hora_hecho }}hs</span></p>
+              </div>
+            </div>
+
+            <div class="border-t border-white/10 pt-4" *ngIf="r.patente_propia">
+              <span class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Patente del Asegurado</span>
+              <div class="inline-block border border-indigo-500/30 bg-indigo-500/10 rounded px-3 py-1 text-indigo-300 font-mono font-bold text-sm uppercase tracking-widest">{{ r.patente_propia }}</div>
+            </div>
+
+            <div class="flex flex-wrap gap-2 pt-4 border-t border-white/10" *ngIf="r.in_itinere || r.posee_art || r.intervino_policia || r.intervino_ambulancia || r.sufrio_lesiones">
+              <span *ngIf="r.sufrio_lesiones" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-bold">Sufrió Lesiones</span>
+              <span *ngIf="r.in_itinere" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-bold">In Itinere</span>
+              <span *ngIf="r.posee_art" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-bold">Posee ART</span>
+              <span *ngIf="r.intervino_policia" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-bold">Intervino Policía</span>
+              <span *ngIf="r.intervino_ambulancia" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-bold">Ambulancia</span>
+            </div>
+
+            <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-4" *ngIf="r.relato_hecho">
+              <span class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Relato del Hecho</span>
+              <p class="text-sm text-slate-300 italic leading-relaxed">"{{ r.relato_hecho }}"</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="bg-white/[0.02] border border-white/10 rounded-3xl overflow-hidden backdrop-blur-sm" *ngIf="r.aseguradora_tercero || r.patente_tercero || r.tercero_nombre">
+          <div class="bg-white/5 border-b border-white/10 px-6 py-4 flex items-center gap-3">
+            <svg class="w-5 h-5 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <h3 class="text-lg font-bold text-white tracking-tight">Datos del Tercero Implicado</h3>
+          </div>
+          <div class="p-6 md:p-8">
+            <div class="grid sm:grid-cols-2 gap-6">
+              <div *ngIf="r.aseguradora_tercero">
+                <span class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Compañía Aseguradora</span>
+                <p class="text-[15px] text-white font-semibold">{{ r.aseguradora_tercero }}</p>
+              </div>
+              <div *ngIf="r.patente_tercero">
+                <span class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Patente Vehículo</span>
+                <div class="inline-block border border-slate-700 bg-slate-900 rounded px-2.5 py-0.5 text-white font-mono font-bold text-sm uppercase tracking-widest">{{ r.patente_tercero }}</div>
+              </div>
+              <div *ngIf="r.tercero_nombre">
+                <span class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Conductor / Titular</span>
+                <p class="text-[15px] text-white">{{ r.tercero_nombre }} {{ r.tercero_apellido }}</p>
+              </div>
+              <div *ngIf="r.tercero_dni">
+                <span class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">DNI</span>
+                <p class="text-[15px] text-white font-mono">{{ r.tercero_dni }}</p>
+              </div>
+              <div class="sm:col-span-2" *ngIf="r.tercero_marca_modelo">
+                <span class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Marca / Modelo Vehículo</span>
+                <p class="text-[15px] text-white">{{ r.tercero_marca_modelo }}</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="bg-white/[0.02] border border-white/10 rounded-3xl overflow-hidden backdrop-blur-sm">
+          <div class="bg-white/5 border-b border-white/10 px-6 py-4 flex items-center gap-3">
+            <svg class="w-5 h-5 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+            <h3 class="text-lg font-bold text-white tracking-tight">Identificación y Cobros</h3>
+          </div>
+          <div class="p-6 md:p-8 space-y-6">
+            <div class="grid sm:grid-cols-2 gap-6">
+              <div>
+                <span class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">DNI Cliente</span>
+                <p class="text-[15px] text-white font-mono">{{ r.dni }}</p>
+              </div>
+              <div *ngIf="r.email">
+                <span class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Correo Electrónico</span>
+                <p class="text-[15px] text-indigo-300 truncate">{{ r.email }}</p>
+              </div>
+              <div class="sm:col-span-2" *ngIf="r.domicilio_usuario">
+                <span class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Domicilio Declarado</span>
+                <p class="text-[15px] text-white">{{ r.domicilio_usuario }}</p>
+              </div>
+            </div>
+
+            <div class="bg-emerald-500/10 border border-emerald-500/20 rounded-2xl p-4 flex items-center gap-4" *ngIf="r.cbu">
+              <div class="w-10 h-10 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-sm shrink-0">$</div>
+              <div>
+                <span class="block text-[10px] font-bold text-emerald-500 uppercase tracking-wider mb-0.5">CBU / CVU para Cobro</span>
+                <p class="text-emerald-100 font-mono text-sm tracking-wider font-semibold">{{ r.cbu }}</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="bg-white/[0.02] border border-white/10 rounded-3xl overflow-hidden backdrop-blur-sm" *ngIf="galeriaFotos.length > 0 || cargandoFotos">
+          <div class="bg-white/5 border-b border-white/10 px-6 py-4 flex items-center justify-between">
+            <h3 class="text-lg font-bold text-white tracking-tight">Evidencia Fotográfica</h3>
+            <span class="bg-slate-800 text-slate-300 text-xs font-bold px-3 py-1 rounded-full">{{ galeriaFotos.length }} Fotos</span>
+          </div>
+          <div class="p-6 md:p-8">
+            <div *ngIf="cargandoFotos" class="flex items-center justify-center py-6 text-slate-400 gap-2">
+              <svg class="animate-spin h-5 w-5 text-indigo-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+              Sincronizando galería...
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4" *ngIf="!cargandoFotos">
+              <div class="relative aspect-square rounded-xl overflow-hidden group cursor-pointer border border-white/10" *ngFor="let url of galeriaFotos" (click)="abrirFoto(url)">
+                <img [ngSrc]="url" fill alt="Evidencia" style="object-fit: cover;" class="group-hover:scale-105 transition-transform duration-300">
+                <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity backdrop-blur-xs">
+                  <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="bg-white/[0.02] border border-white/10 rounded-3xl overflow-hidden backdrop-blur-sm">
+          <div class="bg-white/5 border-b border-white/10 px-6 py-4 flex items-center justify-between">
+            <h3 class="text-lg font-bold text-white tracking-tight">Legajo de Documentos</h3>
+            <span class="bg-slate-800 text-slate-300 text-xs font-bold px-3 py-1 rounded-full">{{ archivosDisponibles.length }} Archivos</span>
+          </div>
+          <div class="p-6 md:p-8">
+            <div class="grid sm:grid-cols-2 gap-4" *ngIf="archivosDisponibles.length > 0">
+              <div *ngFor="let doc of archivosDisponibles" 
+                   class="group bg-slate-900 border border-slate-800 hover:border-indigo-500/50 hover:bg-white/5 transition-all rounded-2xl p-4 flex items-center justify-between cursor-pointer"
+                   [ngClass]="{'border-indigo-500/30 bg-indigo-500/5': doc.highlight, 'border-red-500/30 bg-red-500/5': doc.alert}"
+                   (click)="verArchivo(doc)">
+                <div class="flex items-center gap-3">
+                  <div class="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 bg-slate-800 text-slate-400 group-hover:text-indigo-400 transition-colors">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                  </div>
+                  <div>
+                    <span class="block text-sm font-semibold text-white group-hover:text-indigo-300 transition-colors">{{ doc.label }}</span>
+                    <span class="text-xs text-slate-500">{{ doc.sub }}</span>
+                  </div>
+                </div>
+                <svg class="w-4 h-4 text-slate-600 group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 21h4m2-3h.01M17 14h.01M14 11h.01M11 11h.01M12 7h.01M18 7h.01M6 7h.01M6 11h.01M6 14h.01M6 18h.01M18 14h.01M18 18h.01M21 22V6a2 2 0 00-2-2H5a2 2 0 00-2 2v16l3-3 3 3 3-3 3 3 3-3 3 3z"/></svg>
+              </div>
+            </div>
+            <div *ngIf="archivosDisponibles.length === 0" class="text-center py-6 text-slate-500 text-sm">No se adjuntaron archivos adicionales.</div>
+          </div>
+        </section>
+
+      </div>
+
+      <div class="space-y-8">
+        
+        <section class="bg-white/[0.02] border border-white/10 rounded-3xl overflow-hidden backdrop-blur-sm shadow-2xl" *ngIf="authService.esAdmin || authService.esTramitador">
+          <div class="bg-indigo-600/10 border-b border-indigo-500/20 px-6 py-4">
+            <h3 class="text-lg font-bold text-white tracking-tight">Gestión Operativa</h3>
+          </div>
+
+          <div class="p-6">
+            
+            <div class="mb-8">
+              <span class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">Abogado Encargado</span>
+              
+              <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl flex items-center justify-between" *ngIf="!editandoTramitador() && r.tramitador">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-bold">
+                    {{ r.tramitador.nombre.charAt(0) }}
+                  </div>
+                  <div>
+                    <span class="block text-white font-medium">{{ r.tramitador.nombre }}</span>
+                    <span class="text-xs text-slate-400">Tramitador</span>
+                  </div>
+                </div>
+                
+                <div class="flex items-center gap-1" *ngIf="authService.esAdmin">
+                  <button class="p-2 text-slate-500 hover:text-white hover:bg-slate-800 rounded-lg transition-colors focus:outline-none" title="Cambiar Abogado" (click)="activarEdicion()">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
+                  </button>
+                  <button class="p-2 text-slate-500 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors focus:outline-none" title="Remover Abogado" (click)="removerAbogado()">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                  </button>
+                </div>
+              </div>
+
+              <button class="w-full flex items-center justify-center gap-2 border-2 border-dashed border-indigo-500/40 hover:bg-indigo-500/5 text-indigo-400 font-medium py-3 rounded-2xl transition-colors" *ngIf="!editandoTramitador() && !r.tramitador" (click)="activarEdicion()">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg> Asignar Abogado
+              </button>
+
+              <div class="animate-fade-in bg-slate-900 border border-slate-800 p-4 rounded-2xl" *ngIf="editandoTramitador()">
+                
+                <select [(ngModel)]="tramitadorSeleccionado" [disabled]="guardandoTramitador" class="w-full bg-[#0f172a] border border-slate-700 rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:border-indigo-500 mb-3 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
+                  <option value="" disabled selected>Seleccionar profesional...</option>
+                  <option *ngFor="let t of tramitadores" [value]="t.id">{{ t.nombre }}</option>
+                </select>
+                
+                <div class="flex gap-2">
+                  <button class="flex-1 py-2 rounded-xl text-sm border border-slate-700 text-slate-300 hover:bg-slate-800 transition-colors disabled:opacity-50" (click)="cancelarEdicion()" [disabled]="guardandoTramitador">Cancelar</button>
+                  
+                  <button class="flex-1 py-2 rounded-xl text-sm bg-indigo-600 hover:bg-indigo-500 text-white transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed" (click)="asignarAbogado()" [disabled]="guardandoTramitador || !tramitadorSeleccionado">
+                    <svg *ngIf="guardandoTramitador" class="animate-spin h-4 w-4 text-white shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                    <span>{{ guardandoTramitador ? 'Asignando...' : 'Asignar' }}</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-8">
+              <div class="flex bg-slate-900 p-1 rounded-xl mb-4">
+                <button class="flex-1 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all" [ngClass]="tabActual === 'publico' ? 'bg-indigo-500 text-white' : 'text-slate-500 hover:text-white'" (click)="cambiarTab('publico')">Cliente</button>
+                <button class="flex-1 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all" [ngClass]="tabActual === 'interno' ? 'bg-amber-500 text-amber-950' : 'text-slate-500 hover:text-white'" (click)="cambiarTab('interno')">Interno</button>
+              </div>
+
+              <div class="animate-fade-in" *ngIf="tabActual === 'publico'">
+                <div class="max-h-[240px] overflow-y-auto mb-4 space-y-3 pr-1 scrollbar-none">
+                  <div class="bg-indigo-500/10 border border-indigo-500/10 rounded-2xl rounded-tl-none p-3" *ngFor="let msg of r.mensajes">
+                    <div class="flex justify-between items-center mb-1 text-[11px]">
+                      <span class="font-bold text-indigo-400">Estudio Jurídico</span>
+                      <span class="text-slate-500 font-mono">{{ msg.fecha | date:'dd/MM HH:mm' }}</span>
+                    </div>
+                    <p class="text-sm text-slate-300 leading-relaxed">{{ msg.texto }}</p>
+                  </div>
+                  <div class="text-center py-6 text-slate-600 text-xs italic" *ngIf="!r.mensajes || r.mensajes.length === 0">No hay novedades públicas cargadas.</div>
+                </div>
+                <div class="relative">
+                  <input type="text" [(ngModel)]="observacionTexto" placeholder="Escribir novedad pública..." (keyup.enter)="guardarObservacion()" class="w-full bg-[#0f172a] border border-slate-700 rounded-xl pl-4 pr-12 py-2.5 text-sm text-white focus:outline-none focus:border-indigo-500 transition-colors">
+                  <button class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg transition-colors" (click)="guardarObservacion()" [disabled]="guardandoObservacion || !observacionTexto.trim()">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+                  </button>
+                </div>
+              </div>
+
+              <div class="animate-fade-in" *ngIf="tabActual === 'interno'">
+                <div class="max-h-[240px] overflow-y-auto mb-4 space-y-3 pr-1 scrollbar-none">
+                  <div class="bg-amber-500/10 border border-amber-500/10 rounded-2xl rounded-tr-none p-3" *ngFor="let nota of r.notas_internas">
+                    <div class="flex justify-between items-center mb-1 text-[11px]">
+                      <span class="text-slate-500 font-mono">{{ nota.fecha | date:'dd/MM HH:mm' }}</span>
+                      <span class="font-bold text-amber-500">{{ nota.autor || 'Agente' }}</span>
+                    </div>
+                    <p class="text-sm text-slate-300 leading-relaxed">{{ nota.texto }}</p>
+                  </div>
+                  <div class="text-center py-6 text-slate-600 text-xs italic" *ngIf="!r.notas_internas || r.notas_internas.length === 0">No hay anotaciones internas.</div>
+                </div>
+                <div class="relative">
+                  <input type="text" [(ngModel)]="notaInternaTexto" placeholder="Registrar nota interna..." (keyup.enter)="guardarNotaInterna()" class="w-full bg-[#0f172a] border border-amber-500/20 rounded-xl pl-4 pr-12 py-2.5 text-sm text-white focus:outline-none focus:border-amber-500 transition-colors">
+                  <button class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center bg-amber-600 hover:bg-amber-500 text-white rounded-lg transition-colors" (click)="guardarNotaInterna()" [disabled]="guardandoNotaInterna || !notaInternaTexto.trim()">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="border-t border-white/10 pt-6">
+              <span class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">Cambiar Estado del Expediente</span>
+              
+              <div class="flex flex-col gap-1.5">
+                
+                <button *ngFor="let p of pasosTimeline" 
+                        class="w-full text-left px-4 py-2 rounded-xl border text-xs font-semibold transition-all flex items-center relative overflow-hidden"
+                        [disabled]="estadoEnActualizacion !== null"
+                        [ngClass]="{
+                          'bg-indigo-500/10 border-indigo-500/40 text-indigo-300': r.estado === p.id && estadoEnActualizacion !== p.id,
+                          'bg-indigo-600 border-indigo-500 text-white': estadoEnActualizacion === p.id,
+                          'bg-slate-900 border-slate-800 text-slate-400 hover:bg-white/5': r.estado !== p.id && estadoEnActualizacion !== p.id,
+                          'opacity-50 cursor-not-allowed': estadoEnActualizacion !== null && estadoEnActualizacion !== p.id
+                        }"
+                        (click)="cambiarEstado(p.id)">
+                  
+                  <svg *ngIf="estadoEnActualizacion === p.id" class="animate-spin h-3.5 w-3.5 text-white mr-2 shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                  
+                  <span *ngIf="estadoEnActualizacion !== p.id" class="inline-block w-1.5 h-1.5 rounded-full mr-2 shrink-0" [ngClass]="r.estado === p.id ? 'bg-indigo-400' : 'bg-slate-700'"></span>
+                  
+                  {{ p.label }}
+
+                  <span *ngIf="estadoEnActualizacion === p.id" class="ml-auto text-[10px] uppercase tracking-wider animate-pulse text-indigo-200">Guardando...</span>
+                </button>
+
+                <button class="w-full text-left px-4 py-2 rounded-xl border text-xs font-semibold transition-all mt-2 flex items-center relative overflow-hidden"
+                        [disabled]="estadoEnActualizacion !== null"
+                        [ngClass]="{
+                          'bg-red-500/10 border-red-500/40 text-red-400': r.estado === 'Rechazado' && estadoEnActualizacion !== 'Rechazado',
+                          'bg-red-600 border-red-500 text-white': estadoEnActualizacion === 'Rechazado',
+                          'bg-slate-900 border-slate-800 text-slate-400 hover:bg-red-500/5 hover:text-red-400 hover:border-red-500/20': r.estado !== 'Rechazado' && estadoEnActualizacion !== 'Rechazado',
+                          'opacity-50 cursor-not-allowed': estadoEnActualizacion !== null && estadoEnActualizacion !== 'Rechazado'
+                        }"
+                        (click)="cambiarEstado('Rechazado')">
+                  
+                  <svg *ngIf="estadoEnActualizacion === 'Rechazado'" class="animate-spin h-3.5 w-3.5 text-white mr-2 shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                  
+                  <span *ngIf="estadoEnActualizacion !== 'Rechazado'" class="inline-block w-1.5 h-1.5 rounded-full mr-2 shrink-0" [ngClass]="r.estado === 'Rechazado' ? 'bg-red-400' : 'bg-slate-700'"></span>
+                  
+                  Rechazar Caso
+
+                  <span *ngIf="estadoEnActualizacion === 'Rechazado'" class="ml-auto text-[10px] uppercase tracking-wider animate-pulse text-red-200">Guardando...</span>
+                </button>
+
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <section class="bg-white/[0.02] border border-white/10 rounded-3xl p-5 flex items-center gap-3 backdrop-blur-sm shadow-xl">
+          <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center font-bold text-slate-400">{{ r.usuario_creador?.nombre?.charAt(0) || 'S' }}</div>
+          <div>
+            <span class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider">Creado por</span>
+            <span class="text-sm font-semibold text-white">{{ r.usuario_creador?.nombre || 'Portal Directo' }}</span>
+          </div>
+        </section>
+
+      </div>
+
+    </div>
+  </div>
+</div>

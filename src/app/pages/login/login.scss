@@ -1,0 +1,356 @@
+// /* VARIABLES GLOBALES (Coincidentes con Iniciar Trámite) */
+// $bg-dark: #0f172a;
+// $accent: #f59e0b; /* Naranja para detalles */
+// $primary: #3b82f6; /* Azul para Login principal */
+
+// :host {
+//   display: block;
+//   min-height: 100vh;
+// }
+
+// /* --- LAYOUT PRINCIPAL (IDÉNTICO) --- */
+// .split-layout {
+//   display: flex;
+//   min-height: 100vh;
+//   background-color: #f8fafc;
+// }
+
+// /* =========================================================
+//    PANEL IZQUIERDO (SIDEBAR FIJO)
+//    ========================================================= */
+// .side-panel {
+//   width: 35%;
+//   background-color: $bg-dark;
+//   color: white;
+//   padding: 10rem 3rem 4rem 3rem; /* Mismo padding para alinear visualmente */
+  
+//   /* Sticky Effect */
+//   position: sticky;
+//   top: 0;
+//   height: 100vh;
+//   overflow: hidden;
+//   z-index: 10;
+  
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: space-between; /* Para mandar el copyright abajo */
+
+//   .panel-content {
+//     position: relative;
+//     z-index: 2;
+//   }
+// }
+
+// .panel-content {
+//   display: flex; 
+//   flex-direction: column; 
+//   height: 100%;
+// }
+
+// .side-bg-glow {
+//   position: absolute;
+//   top: -20%; 
+//   left: -20%;
+//   width: 600px;
+//   height: 600px;
+  
+//   /* Gradiente Azul suave */
+//   background: radial-gradient(
+//     circle, 
+//     rgba(59, 130, 246, 0.15) 0%, 
+//     rgba(15, 23, 42, 0) 70%
+//   );
+  
+//   z-index: 0; /* Detrás del texto */
+//   pointer-events: none;
+// }
+
+// @media (max-width: 900px) {
+//   .side-bg-glow {
+//     top: -50%;
+//     left: 50%;
+//     transform: translateX(-50%);
+//     width: 100%;
+//     height: 400px;
+//     background: radial-gradient(
+//       circle, 
+//       rgba(59, 130, 246, 0.2) 0%, 
+//       rgba(15, 23, 42, 0) 70%
+//     );
+//   }
+// }
+
+// h2 {
+//   font-size: 2.5rem;
+//   line-height: 1.1;
+//   margin-bottom: 1rem;
+//   color: white;
+//   font-weight: 700;
+// }
+
+// .panel-desc {
+//   color: rgba(255, 255, 255, 0.7);
+//   font-size: 1rem;
+//   line-height: 1.6;
+//   margin-bottom: 3rem;
+//   max-width: 90%;
+// }
+
+// /* Decoración estilo dashboard (Reemplaza al stepper visualmente) */
+// .admin-decoration {
+//     display: flex;
+//     gap: 1.5rem;
+//     margin-bottom: auto; /* Empuja el footer hacia abajo */
+// }
+
+// .stat-card {
+//     background: rgba(255,255,255,0.05);
+//     border: 1px solid rgba(255,255,255,0.1);
+//     padding: 1rem 1.5rem;
+//     border-radius: 12px;
+//     display: flex;
+//     flex-direction: column;
+    
+//     .stat-num { font-size: 1.5rem; font-weight: 800; color: $primary; }
+//     .stat-txt { font-size: 0.8rem; color: #94a3b8; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;}
+// }
+
+// .brand-footer {
+//     opacity: 0.4;
+//     font-size: 0.85rem;
+// }
+
+// /* =========================================================
+//    PANEL DERECHO (CONTENIDO)
+//    ========================================================= */
+// .main-content {
+//   width: 65%;
+//   padding: 10rem 4rem 4rem 4rem; /* Mismo padding */
+//   display: flex;
+//   justify-content: center;
+// }
+
+// .content-wrapper {
+//   width: 100%;
+//   max-width: 550px; /* Un poco más angosto que el reclamo para login */
+// }
+
+// /* BOTÓN VOLVER (Idéntico) */
+// .btn-back-text {
+//   background: none; border: none;
+//   display: flex; align-items: center; gap: 5px;
+//   color: #64748b; font-weight: 600; cursor: pointer; text-decoration: none;
+//   margin-bottom: 3rem;
+//   &:hover { color: $primary; }
+//   svg { width: 18px; height: 18px; }
+// }
+
+// /* Header interno del form */
+// .form-header-internal {
+//     margin-bottom: 2.5rem;
+//     h3 { font-size: 1.8rem; color: #1e293b; margin-bottom: 0.5rem; font-weight: 700; }
+//     p { color: #64748b; font-size: 1rem; }
+// }
+
+// /* GRID SYSTEM */
+// .grid-2 {
+//   display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;
+// }
+
+// .input-group {
+//   margin-bottom: 1.5rem;
+//   label { display: block; font-size: 0.9rem; font-weight: 600; color: #475569; margin-bottom: 0.5rem; }
+//   &.full { grid-column: 1 / -1; }
+// }
+
+// /* INPUTS (Clase 'input-modern' adaptada para soportar íconos) */
+// .input-modern {
+//   width: 100%;
+//   padding: 0.8rem 1rem;
+//   border: 1px solid #cbd5e1;
+//   border-radius: 8px;
+//   font-size: 1rem;
+//   font-family: inherit;
+//   transition: all 0.2s;
+//   background: white;
+
+//   &:focus { outline: none; border-color: $primary; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); }
+  
+//   /* Modificador para cuando tiene ícono */
+//   &.with-icon {
+//       padding-left: 2.8rem;
+//   }
+
+//   &.with-toggle {
+//       padding-right: 2.8rem;
+//   }
+  
+//   /* Estado de error */
+//   &.error-border {
+//     border-color: #ef4444 !important;
+//     background-color: #fff5f5;
+//     animation: shake 0.4s ease-in-out;
+//   }
+// }
+
+// /* Wrapper para posicionar el icono */
+// .input-wrapper-icon {
+//     position: relative;
+//     .input-icon {
+//         position: absolute; left: 0.8rem; top: 50%; transform: translateY(-50%);
+//         color: #94a3b8; display: flex; pointer-events: none;
+//         svg { width: 20px; height: 20px; }
+//     }
+    
+//     /* Cuando el input tiene foco, coloreamos el icono hermano */
+//     .input-modern:focus + .input-icon, 
+//     .input-modern:focus ~ .input-icon { 
+//         color: $primary; 
+//     }
+
+//     .btn-toggle-password {
+//         position: absolute; 
+//         right: 0.8rem; 
+//         top: 50%; 
+//         transform: translateY(-50%);
+//         background: transparent; 
+//         border: none;
+//         color: #94a3b8; 
+//         display: flex; 
+//         cursor: pointer;
+//         padding: 0;
+//         transition: color 0.2s;
+        
+//         &:hover, &:focus { color: $primary; outline: none; }
+//         svg { width: 20px; height: 20px; }
+//     }
+// }
+
+// .error-msg {
+//   color: #ef4444; font-size: 0.8rem; font-weight: 600; margin-top: 4px; display: block;
+//   animation: slideDown 0.3s ease-out;
+// }
+
+// /* BOTÓN PRINCIPAL (Copiado de btn-submit-glow pero version Blue) */
+// .btn-submit-glow {
+//   width: 100%; padding: 1rem;
+//   background: $accent; color: white; /* Por defecto naranja */
+//   border: none; border-radius: 12px;
+//   font-size: 1.1rem; font-weight: 700;
+//   cursor: pointer; transition: all 0.3s;
+//   box-shadow: 0 0 15px rgba(245, 158, 11, 0.4);
+//   display: flex; justify-content: center; align-items: center;
+  
+//   &:hover { transform: translateY(-2px); box-shadow: 0 0 25px rgba(245, 158, 11, 0.6); }
+//   &:disabled { background: #cbd5e1; box-shadow: none; cursor: not-allowed; transform: none; }
+
+//   /* VARIANTE BLUE PARA LOGIN */
+//   &.blue-version {
+//       background: $primary;
+//       box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
+//       &:hover { box-shadow: 0 0 25px rgba(59, 130, 246, 0.6); }
+//   }
+// }
+
+// /* Footer del form */
+// .form-footer {
+//    text-align: center; margin-top: 1.5rem; color: #64748b; font-size: 0.95rem;
+//    .link-action { color: $primary; font-weight: 600; cursor: pointer; transition: color 0.2s; &:hover { text-decoration: underline; color: darken($primary, 10%); } }
+// }
+
+// /* ANIMACIONES */
+// .fade-in { animation: fadeIn 0.4s ease-out; }
+// @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+// @keyframes slideDown { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+// @keyframes shake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-4px); } 40%, 80% { transform: translateX(4px); } }
+
+// .spinner-loader {
+//   width: 24px; height: 24px;
+//   border: 3px solid rgba(255, 255, 255, 0.3);
+//   border-radius: 50%; border-top-color: #ffffff;
+//   animation: spin 1s ease-in-out infinite;
+// }
+// @keyframes spin { to { transform: rotate(360deg); } }
+
+// /* =========================================================
+//    RESPONSIVE (Móvil)
+//    ========================================================= */
+// @media (max-width: 900px) {
+//   .split-layout { 
+//     flex-direction: column; 
+//   }
+
+//   .side-panel {
+//     width: 100%; 
+//     height: auto; 
+//     position: relative;
+    
+//     /* CORRECCIÓN: 9rem arriba para despegar del Navbar */
+//     padding: 10rem 1.5rem 3rem 1.5rem; 
+    
+//     h2 { text-align: center; font-size: 2rem; }
+//     .panel-desc { text-align: center; margin: 0 auto 2rem auto; }
+    
+//     /* Ocultamos deco */
+//     .admin-decoration, .brand-footer { display: none; }
+//   }
+
+//   .main-content {
+//     width: 100%;
+//     padding: 3rem 1.5rem 5rem 1.5rem;
+//   }
+  
+//   /* Ajuste para la tarjeta de estado en pantallas chicas */
+//   .status-wrapper {
+//     margin-top: -2rem; /* Subimos un pelín la tarjeta para que se vea antes */
+//   }
+// }
+
+// .nav-back-link {
+//   display: inline-flex;
+//   align-items: center;
+//   gap: 8px;
+//   text-decoration: none;
+//   color: #64748b; /* Gris suave */
+//   font-weight: 600;
+//   font-size: 0.95rem;
+//   transition: all 0.3s ease;
+//   padding: 0.5rem 0;
+//   margin-bottom: 2rem;
+
+//   .icon-wrap {
+//     display: flex;
+//     align-items: center;
+//     transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); /* Efecto rebote suave */
+    
+//     svg { width: 20px; height: 20px; }
+//   }
+
+//   /* Hover Effect: La flecha se mueve hacia atrás y cambia a azul */
+//   &:hover {
+//     color: $primary; /* Tu variable azul */
+    
+//     .icon-wrap {
+//       transform: translateX(-5px); /* Desplazamiento */
+//     }
+//   }
+// }
+
+// /* --- OLVIDÉ MI CONTRASEÑA --- */
+// .password-options {
+//   display: flex;
+//   justify-content: flex-end;
+//   margin-top: 0.5rem;
+
+//   .forgot-link {
+//     font-size: 0.85rem;
+//     color: #64748b;
+//     font-weight: 500;
+//     text-decoration: none;
+    
+//     &:hover {
+//       color: $primary; /* Se pone azulcito al pasar el mouse */
+//       text-decoration: underline;
+//     }
+//   }
+// }
