@@ -86,14 +86,15 @@
 
       <div class="lg:col-span-2 space-y-8">
         
-        <section class="bg-white/[0.02] border border-white/10 rounded-3xl overflow-hidden backdrop-blur-sm" *ngIf="r.fecha_hecho || r.lugar_hecho">
+        <section class="bg-white/[0.02] border border-white/10 rounded-3xl overflow-hidden backdrop-blur-sm">
           <div class="bg-white/5 border-b border-white/10 px-6 py-4 flex items-center gap-3">
             <svg class="w-5 h-5 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
             <h3 class="text-lg font-bold text-white tracking-tight">Detalles del Siniestro</h3>
           </div>
           
           <div class="p-6 md:p-8 space-y-6">
-            <div class="grid sm:grid-cols-2 gap-6">
+            
+            <div class="grid sm:grid-cols-2 gap-6" *ngIf="r.lugar_hecho || r.fecha_hecho">
               <div *ngIf="r.lugar_hecho">
                 <span class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Lugar del Hecho</span>
                 <p class="text-[15px] text-white">{{ r.lugar_hecho }} <span class="text-slate-400" *ngIf="r.localidad">({{ r.localidad }})</span></p>
@@ -109,15 +110,19 @@
               <div class="inline-block border border-indigo-500/30 bg-indigo-500/10 rounded px-3 py-1 text-indigo-300 font-mono font-bold text-sm uppercase tracking-widest">{{ r.patente_propia }}</div>
             </div>
 
-            <div class="flex flex-wrap gap-2 pt-4 border-t border-white/10" *ngIf="r.in_itinere || r.posee_art || r.intervino_policia || r.intervino_ambulancia || r.sufrio_lesiones">
+            <div class="flex flex-wrap gap-2 pt-4 border-t border-white/10" *ngIf="r.tiene_seguro !== null || r.sufrio_lesiones !== null">
+              <span *ngIf="r.tiene_seguro" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-bold">Seguro Vigente</span>
+              <span *ngIf="!r.tiene_seguro && r.rol_victima === 'Conductor'" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-bold">Sin Seguro</span>
+              
+              <span *ngIf="r.hizo_denuncia" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-teal-500/10 border border-teal-500/20 text-teal-400 text-xs font-bold">Denuncia Admin.</span>
               <span *ngIf="r.sufrio_lesiones" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-bold">Sufrió Lesiones</span>
               <span *ngIf="r.in_itinere" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-bold">In Itinere</span>
-              <span *ngIf="r.posee_art" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-bold">Posee ART</span>
+              <span *ngIf="r.posee_art" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs font-bold">Posee ART</span>
               <span *ngIf="r.intervino_policia" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-bold">Intervino Policía</span>
               <span *ngIf="r.intervino_ambulancia" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-bold">Ambulancia</span>
             </div>
 
-            <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-4" *ngIf="r.relato_hecho">
+            <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-4 mt-4" *ngIf="r.relato_hecho">
               <span class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Relato del Hecho</span>
               <p class="text-sm text-slate-300 italic leading-relaxed">"{{ r.relato_hecho }}"</p>
             </div>

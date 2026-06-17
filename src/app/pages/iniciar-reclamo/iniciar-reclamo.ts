@@ -59,17 +59,17 @@ export class IniciarReclamoComponent implements OnInit {
     codigo_ref: [''],
     
     // --- DATOS OBLIGATORIOS (Los únicos que trancan el form) ---
-    nombre: ['', [Validators.required, Validators.minLength(3), Validators.pattern(this.nombrePattern), this.noWhitespaceValidator]],
+    nombre: ['', [Validators.required, Validators.minLength(3), Validators.pattern(this.nombrePattern), this.noWhitespaceValidator.bind(this)]],
     telefono: ['', [Validators.required, Validators.pattern(this.telPattern)]],
     dni: ['', [Validators.required, Validators.pattern(this.dniPattern)]], 
     rol_victima: ['', Validators.required],
     
-    // --- DATOS PERSONALES OPCIONALES ---
+    // --- DATOS PERSONALES OPCIONALES / OBLIGATORIOS ---
     email: ['', [Validators.required, Validators.email]],
     domicilio_usuario: [''],
     cbu: ['', [Validators.pattern(this.cbuPattern)]], 
 
-    // --- DATOS SINIESTRO OPCIONALES ---
+    // --- DATOS SINIESTRO (Dinámicos) ---
     tiene_seguro: [true], 
     hizo_denuncia: [false],
     sufrio_lesiones: [false], 
@@ -87,7 +87,7 @@ export class IniciarReclamoComponent implements OnInit {
     intervino_ambulancia: [false],
     patente_propia: ['', [Validators.pattern(this.patentePattern)]], 
 
-    // --- TERCERO OPCIONALES ---
+    // --- TERCERO (Dinámicos) ---
     aseguradora_tercero: [''],
     patente_tercero: ['', [Validators.pattern(this.patentePattern)]],
     tercero_nombre: [''],
@@ -95,7 +95,7 @@ export class IniciarReclamoComponent implements OnInit {
     tercero_dni: [''],
     tercero_marca_modelo: [''],
 
-    // --- ARCHIVOS (Todos Opcionales) ---
+    // --- ARCHIVOS ---
     fileDNI: [null],           
     fileLicencia: [null],      
     fileCedula: [null],        
@@ -134,6 +134,9 @@ export class IniciarReclamoComponent implements OnInit {
         this.reclamoForm.patchValue({ codigo_ref: referido });
       }
     });
+
+    // Seteamos las validaciones iniciales según los switches por defecto
+    this.actualizarValidacionesDinamicas();
   }
 
   get noRequiereFirma(): boolean {
@@ -159,9 +162,67 @@ export class IniciarReclamoComponent implements OnInit {
   onFirmaRealizada() { this.errorFirma = false; }
 
   noWhitespaceValidator(control: AbstractControl): ValidationErrors | null {
-    if (!control.value) return null; // Ahora permitimos vacíos (es opcional)
+    if (!control.value) return null; 
     const isWhitespace = control.value.trim().length === 0;
     return !isWhitespace ? null : { 'whitespace': true };
+  }
+
+  fechaValidator(control: AbstractControl): ValidationErrors | null {
+    if (!control.value) return null; // Si está vacío, se encarga el Validators.required
+    
+    const parts = control.value.split('-');
+    if (parts.length !== 3) return null;
+    
+    // Lo parseamos a las 00:00:00 para evitar errores de zona horaria
+    const fechaIngresada = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+    const hoy = new Date();
+    hoy.setHours(0, 0, 0, 0);
+
+    if (fechaIngresada > hoy) return { 'futuro': true };
+
+    const hace3Anios = new Date();
+    hace3Anios.setFullYear(hoy.getFullYear() - 3);
+    hace3Anios.setHours(0, 0, 0, 0);
+
+    if (fechaIngresada < hace3Anios) return { 'prescripto': true };
+
+    return null;
+  }
+
+  actualizarValidacionesDinamicas() {
+    const requiereSiniestro = !this.esConductor || !this.tieneSeguro || !this.hizoDenuncia;
+    const camposSiniestro = ['fecha_hecho', 'hora_hecho', 'lugar_hecho', 'provincia', 'localidad', 'relato_hecho'];
+    
+    if (requiereSiniestro) {
+      this.reclamoForm.get('fecha_hecho')?.setValidators([Validators.required, this.fechaValidator.bind(this)]);
+      this.reclamoForm.get('hora_hecho')?.setValidators([Validators.required]);
+      this.reclamoForm.get('lugar_hecho')?.setValidators([Validators.required, Validators.minLength(5), this.noWhitespaceValidator.bind(this)]);
+      this.reclamoForm.get('provincia')?.setValidators([Validators.required]);
+      this.reclamoForm.get('localidad')?.setValidators([Validators.required]);
+      this.reclamoForm.get('relato_hecho')?.setValidators([Validators.required, Validators.minLength(10), this.noWhitespaceValidator.bind(this)]);
+    } else {
+      camposSiniestro.forEach(c => this.reclamoForm.get(c)?.clearValidators());
+    }
+    camposSiniestro.forEach(c => this.reclamoForm.get(c)?.updateValueAndValidity());
+
+    // Hacemos dinámicos los del tercero si no tiene seguro o es peatón/acompañante
+    const requiereTercero = !this.esConductor || !this.tieneSeguro;
+    const camposTercero = ['aseguradora_tercero', 'patente_tercero', 'tercero_nombre', 'tercero_dni', 'tercero_marca_modelo'];
+
+    if (requiereTercero) {
+      this.reclamoForm.get('aseguradora_tercero')?.setValidators([Validators.required]);
+      this.reclamoForm.get('patente_tercero')?.setValidators([Validators.required, Validators.pattern(this.patentePattern)]);
+      this.reclamoForm.get('tercero_nombre')?.setValidators([Validators.required, this.noWhitespaceValidator.bind(this)]);
+      this.reclamoForm.get('tercero_dni')?.setValidators([Validators.required, Validators.pattern(this.dniPattern)]);
+      this.reclamoForm.get('tercero_marca_modelo')?.setValidators([Validators.required, this.noWhitespaceValidator.bind(this)]);
+    } else {
+      this.reclamoForm.get('aseguradora_tercero')?.clearValidators();
+      this.reclamoForm.get('patente_tercero')?.setValidators([Validators.pattern(this.patentePattern)]);
+      this.reclamoForm.get('tercero_nombre')?.clearValidators();
+      this.reclamoForm.get('tercero_dni')?.setValidators([Validators.pattern(this.dniPattern)]);
+      this.reclamoForm.get('tercero_marca_modelo')?.clearValidators();
+    }
+    camposTercero.forEach(c => this.reclamoForm.get(c)?.updateValueAndValidity());
   }
 
   get f() { return this.reclamoForm.controls; }
@@ -178,6 +239,7 @@ export class IniciarReclamoComponent implements OnInit {
     } else {
       this.reclamoForm.patchValue({ tiene_seguro: true });
     }
+    this.actualizarValidacionesDinamicas(); 
     this.pasoActual = 1;
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
@@ -188,12 +250,11 @@ export class IniciarReclamoComponent implements OnInit {
   }
 
   avanzarAPaso2() {
-    // Agregamos la validación del email 👇
     if (this.f['nombre'].invalid || this.f['telefono'].invalid || this.f['dni'].invalid || this.f['email'].invalid) {
       this.f['nombre'].markAsTouched();
       this.f['telefono'].markAsTouched();
       this.f['dni'].markAsTouched();
-      this.f['email'].markAsTouched(); // <-- Le decimos a Angular que muestre el error del email
+      this.f['email'].markAsTouched(); 
       
       this.notificacionService.showError('Revisá los datos personales. Son todos obligatorios.');
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -209,7 +270,20 @@ export class IniciarReclamoComponent implements OnInit {
   }
 
   irAConfirmacion() {
-    // Ya no bloqueamos por falta de fotos ni documentos
+    this.actualizarValidacionesDinamicas();
+    
+    if (this.reclamoForm.invalid) {
+      this.reclamoForm.markAllAsTouched(); 
+      this.notificacionService.showError('Revisá los campos obligatorios en rojo antes de continuar.');
+      
+      // Auto-scroll al primer error en pantalla
+      setTimeout(() => {
+        const firstError = document.querySelector('.border-red-500');
+        if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 100);
+      return;
+    }
+
     this.pasoActual = 3;
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
@@ -227,15 +301,16 @@ export class IniciarReclamoComponent implements OnInit {
 
   toggleDenuncia(checked: boolean) {
     this.reclamoForm.patchValue({ hizo_denuncia: checked });
+    this.actualizarValidacionesDinamicas();
   }
 
   toggleSeguro(checked: boolean) {
     this.reclamoForm.patchValue({ tiene_seguro: checked });
+    this.actualizarValidacionesDinamicas();
   }
 
   actualizarValidaciones(rol: string) {
-    // Limpiamos esta función porque ya no dynamically hacemos required ningún campo.
-    // Mantenemos la función para compatibilidad con el HTML.
+    // Ya no es necesaria, mantenida por retrocompatibilidad HTML
   }
 
   // --- MANEJO DE ARCHIVOS (Múltiples y Únicos) ---
@@ -248,14 +323,10 @@ export class IniciarReclamoComponent implements OnInit {
     
     const newFiles = Array.from(input.files) as File[];
     
-    // 1. Prendemos los loaders de inmediato en la UI
     this.isCompressing = true;
     this.isLoading = true; 
 
-    // 2. Liberamos el hilo para que el loader se dibuje (150ms)
     setTimeout(async () => {
-      
-      // Guardamos la hora exacta en la que empieza el proceso
       const tiempoInicio = Date.now();
 
       try {
@@ -293,20 +364,14 @@ export class IniciarReclamoComponent implements OnInit {
         console.error("Error procesando archivos", e);
         this.notificacionService.showError('Error al procesar el archivo. Intente nuevamente.');
       } finally {
-        
-        // 3. Calculamos cuánto tardó el proceso real
         const tiempoTranscurrido = Date.now() - tiempoInicio;
-        
-        // Si tardó menos de 1000ms (1 segundo), calculamos lo que le falta. Si tardó más, esto da 0.
         const tiempoEspera = Math.max(0, 1000 - tiempoTranscurrido);
 
-        // 4. Apagamos el spinner recién cuando se cumpla el tiempo
         setTimeout(() => {
           this.isCompressing = false;
           this.isLoading = false;
           input.value = ''; 
         }, tiempoEspera);
-        
       }
     }, 150); 
   }
