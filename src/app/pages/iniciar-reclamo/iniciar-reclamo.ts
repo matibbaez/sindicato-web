@@ -274,8 +274,19 @@ export class IniciarReclamoComponent implements OnInit {
     
     if (this.reclamoForm.invalid) {
       this.reclamoForm.markAllAsTouched(); 
-      this.notificacionService.showError('Revisá los campos obligatorios en rojo antes de continuar.');
-      
+
+      // 1. Verificamos si el error quedó atrapado atrás, en la pestaña de "Datos Básicos"
+      const controlesPaso1 = ['nombre', 'telefono', 'dni', 'email', 'fecha_hecho', 'hora_hecho', 'lugar_hecho', 'provincia', 'localidad', 'relato_hecho', 'patente_propia'];
+      const errorEnPaso1 = controlesPaso1.some(campo => this.reclamoForm.get(campo)?.invalid);
+
+      if (errorEnPaso1) {
+        this.pasoActual = 1; // <--- Lo arrastramos automáticamente a la pestaña 1
+        this.notificacionService.showError('Faltó completar un dato en la sección de Datos Básicos.');
+      } else {
+        // 2. Si el error está en la pestaña 2 (ej: patente opcional mal escrita), usamos psicología limpia:
+        this.notificacionService.showError('Por favor, corregí los campos remarcados en rojo antes de continuar.');
+      }
+
       // Auto-scroll al primer error en pantalla
       setTimeout(() => {
         const firstError = document.querySelector('.border-red-500');

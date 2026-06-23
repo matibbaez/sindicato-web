@@ -344,6 +344,7 @@
             </div>
           </div>
 
+          <!-- DATOS DEL TERCERO (CORREGIDO CON BORDES ROJOS) -->
           <div class="mb-10 animate-fade-in">
             <h4 class="text-xl font-bold text-white mb-6 border-b border-white/10 pb-2">Datos del Tercero Implicado</h4>
             
@@ -356,46 +357,73 @@
               <div>
                 <label class="block text-sm font-medium text-slate-400 mb-1.5">
                   Aseguradora del tercero
-                  <span *ngIf="!esConductor || !tieneSeguro" class="text-indigo-400">*</span>
+                  <span *ngIf="!esConductor || !tieneSeguro" class="text-blue-400">*</span>
                   <span *ngIf="esConductor && tieneSeguro" class="text-slate-500 text-xs ml-1">(Opcional)</span>
                 </label>
-                <select formControlName="aseguradora_tercero" class="w-full bg-[#0f172a] border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500 transition-colors">
+                <select formControlName="aseguradora_tercero" class="w-full bg-[#0f172a] border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-blue-500 transition-colors"
+                        [class.border-red-500]="f['aseguradora_tercero'].invalid && (f['aseguradora_tercero'].dirty || f['aseguradora_tercero'].touched)">
                   <option value="" disabled selected>Seleccionar compañía...</option>
                   <option *ngFor="let a of aseguradoras" [value]="a">{{ a }}</option>
                 </select>
+                <div *ngIf="f['aseguradora_tercero'].invalid && (f['aseguradora_tercero'].dirty || f['aseguradora_tercero'].touched)" class="mt-1 text-xs text-red-400">
+                  <span>Seleccioná una aseguradora.</span>
+                </div>
               </div>
+
               <div>
                 <label class="block text-sm font-medium text-slate-400 mb-1.5">
                   Patente del tercero
-                  <span *ngIf="!esConductor || !tieneSeguro" class="text-indigo-400">*</span>
+                  <span *ngIf="!esConductor || !tieneSeguro" class="text-blue-400">*</span>
                   <span *ngIf="esConductor && tieneSeguro" class="text-slate-500 text-xs ml-1">(Opcional)</span>
                 </label>
-                <input type="text" formControlName="patente_tercero" class="w-full bg-[#0f172a] border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none uppercase focus:border-indigo-500 transition-colors" placeholder="AA999ZZ o AAA999">
+                <input type="text" formControlName="patente_tercero" class="w-full bg-[#0f172a] border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none uppercase focus:border-blue-500 transition-colors" placeholder="AA999ZZ o AAA999"
+                       [class.border-red-500]="f['patente_tercero'].invalid && (f['patente_tercero'].dirty || f['patente_tercero'].touched)">
+                <div *ngIf="f['patente_tercero'].invalid && (f['patente_tercero'].dirty || f['patente_tercero'].touched)" class="mt-1 text-xs text-red-400">
+                  <span *ngIf="f['patente_tercero'].errors?.['required']">La patente es obligatoria.</span>
+                  <span *ngIf="f['patente_tercero'].errors?.['pattern']">Patente inválida (ingresá 6 o 7 caracteres sin guiones).</span>
+                </div>
               </div>
+
               <div>
                 <label class="block text-sm font-medium text-slate-400 mb-1.5">
                   Nombre del tercero
-                  <span *ngIf="!esConductor || !tieneSeguro" class="text-indigo-400">*</span>
+                  <span *ngIf="!esConductor || !tieneSeguro" class="text-blue-400">*</span>
                   <span *ngIf="esConductor && tieneSeguro" class="text-slate-500 text-xs ml-1">(Opcional)</span>
                 </label>
-                <input type="text" formControlName="tercero_nombre" class="w-full bg-[#0f172a] border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500 transition-colors" placeholder="Nombre y Apellido">
+                <input type="text" formControlName="tercero_nombre" class="w-full bg-[#0f172a] border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-blue-500 transition-colors" placeholder="Nombre y Apellido"
+                       [class.border-red-500]="f['tercero_nombre'].invalid && (f['tercero_nombre'].dirty || f['tercero_nombre'].touched)">
+                <div *ngIf="f['tercero_nombre'].invalid && (f['tercero_nombre'].dirty || f['tercero_nombre'].touched)" class="mt-1 text-xs text-red-400">
+                  <span>Ingresá el nombre del tercero.</span>
+                </div>
               </div>
+
               <div>
                 <label class="block text-sm font-medium text-slate-400 mb-1.5">
                   DNI del tercero
-                  <span *ngIf="!esConductor || !tieneSeguro" class="text-indigo-400">*</span>
+                  <span *ngIf="!esConductor || !tieneSeguro" class="text-blue-400">*</span>
                   <span *ngIf="esConductor && tieneSeguro" class="text-slate-500 text-xs ml-1">(Opcional)</span>
                 </label>
-                <input type="text" formControlName="tercero_dni" class="w-full bg-[#0f172a] border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500 transition-colors" placeholder="Sin puntos">
+                <input type="text" formControlName="tercero_dni" class="w-full bg-[#0f172a] border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-blue-500 transition-colors" placeholder="Sin puntos"
+                       [class.border-red-500]="f['tercero_dni'].invalid && (f['tercero_dni'].dirty || f['tercero_dni'].touched)">
+                <div *ngIf="f['tercero_dni'].invalid && (f['tercero_dni'].dirty || f['tercero_dni'].touched)" class="mt-1 text-xs text-red-400">
+                  <span *ngIf="f['tercero_dni'].errors?.['required']">El DNI es obligatorio.</span>
+                  <span *ngIf="f['tercero_dni'].errors?.['pattern']">DNI inválido (solo números).</span>
+                </div>
               </div>
+
               <div class="sm:col-span-2">
                 <label class="block text-sm font-medium text-slate-400 mb-1.5">
                   Vehículo del tercero (Marca y Modelo)
-                  <span *ngIf="!esConductor || !tieneSeguro" class="text-indigo-400">*</span>
+                  <span *ngIf="!esConductor || !tieneSeguro" class="text-blue-400">*</span>
                   <span *ngIf="esConductor && tieneSeguro" class="text-slate-500 text-xs ml-1">(Opcional)</span>
                 </label>
-                <input type="text" formControlName="tercero_marca_modelo" class="w-full bg-[#0f172a] border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500 transition-colors" placeholder="Ej: Ford Focus Blanco">
+                <input type="text" formControlName="tercero_marca_modelo" class="w-full bg-[#0f172a] border border-slate-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-blue-500 transition-colors" placeholder="Ej: Ford Focus Blanco"
+                       [class.border-red-500]="f['tercero_marca_modelo'].invalid && (f['tercero_marca_modelo'].dirty || f['tercero_marca_modelo'].touched)">
+                <div *ngIf="f['tercero_marca_modelo'].invalid && (f['tercero_marca_modelo'].dirty || f['tercero_marca_modelo'].touched)" class="mt-1 text-xs text-red-400">
+                  <span>Especificá marca y modelo.</span>
+                </div>
               </div>
+
             </div>
           </div>
           <div class="mb-10">
@@ -540,7 +568,7 @@
                 <div class="flex justify-between items-start mb-4">
                   <div>
                     <label class="block font-semibold text-white">Denuncia Administrativa</label>
-                    <span class="text-sm text-slate-400">Constancia presentada en su compañía.</span>
+                    <span class="text-sm text-slate-400">Presentada ante tu aseguradora (Frente y Dorso).</span>
                   </div>
                 </div>
                 <input type="file" id="fileDenuncia" hidden multiple (change)="onFileChange($event, 'fileDenuncia')" accept="image/*,application/pdf">
@@ -573,7 +601,7 @@
                 <div class="flex justify-between items-start mb-4">
                   <div>
                     <label class="block font-semibold text-white">Fotos de los Daños</label>
-                    <span class="text-sm text-slate-400">Enfoque en impactos y patentes.</span>
+                    <span class="text-sm text-slate-400">Enfoque en impactos y patentes. Que en por lo menos una se vea el daño completo y la patente de tu vehículo.</span>
                   </div>
                 </div>
                 <input type="file" id="fileFotos" hidden multiple (change)="onFileChange($event, 'fileFotos')">
@@ -639,7 +667,7 @@
                 <div class="flex justify-between items-start mb-4">
                   <div>
                     <label class="block font-semibold text-white">Certificados Médicos</label>
-                    <span class="text-sm text-slate-400">Historias clínicas o altas.</span>
+                    <span class="text-sm text-slate-400">Historia clínica, alta, placas. Subí todo lo que tengas.</span>
                   </div>
                 </div>
                 <input type="file" id="fileMedicos" hidden multiple (change)="onFileChange($event, 'fileMedicos')" accept="image/*,application/pdf">
@@ -672,7 +700,7 @@
                 <div class="flex justify-between items-start mb-4">
                   <div>
                     <label class="block font-semibold text-white">Constancia de CBU / CVU</label>
-                    <span class="text-sm text-slate-400">Comprobante de cuenta.</span>
+                    <span class="text-sm text-slate-400">Debe ser del titular. HomeBanking, Ticket o PDF.</span>
                   </div>
                 </div>
                 <input type="file" id="fileCBU" hidden multiple (change)="onFileChange($event, 'fileCBU')" accept="image/*,application/pdf">
@@ -705,7 +733,7 @@
                 <div class="flex justify-between items-start mb-4">
                   <div>
                     <label class="block font-semibold text-white">Doc. Complementaria</label>
-                    <span class="text-sm text-slate-400">Exposiciones policiales, etc.</span>
+                    <span class="text-sm text-slate-400">Cualquier otro documento útil.</span>
                   </div>
                 </div>
                 <input type="file" id="fileComplementaria" hidden multiple (change)="onFileChange($event, 'fileComplementaria')" accept="image/*,application/pdf">
