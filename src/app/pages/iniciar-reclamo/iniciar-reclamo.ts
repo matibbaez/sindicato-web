@@ -143,19 +143,20 @@ export class IniciarReclamoComponent implements OnInit {
     return this.authService.isAuthenticated(); 
   }
 
-  // --- GETTERS DE TEXTOS LEGALES ---
+  // --- GETTERS DE TEXTOS LEGALES ACTUALIZADOS ---
+  
   get textoPoder(): string {
-    return `SE PRESENTA – DESIGNA LETRADO – CONSTITUYE DOMICILIO\n\n${this.v.nombre}, DNI ${this.v.dni || 'A completar'}, por derecho propio, conjuntamente con mi abogado patrocinante, el Dr. Agustín Exequiel Simonelli, Tº 141, Fº 755, CPACF, CUIT 20-36045548-4, constituyendo domicilio legal en Gallo 1435 piso 9 de Capital Federal, teléfono 11-3336-0425, ante quien corresponda me presento y respetuosamente digo:\n\nQue vengo a presentarme, designando como único letrado patrocinante al Dr. Agustín Exequiel Simonelli...`;
+    return `SE PRESENTA – DESIGNA LETRADO – CONSTITUYE DOMICILIO\n\n${this.v.nombre || '...'}, DNI ${this.v.dni || '...'}, por derecho propio, conjuntamente con mi abogado patrocinante, el Dr. Agustín Exequiel Simonelli, Tº 141, Fº 755, CPACF, CUIT 20-36045548-4, constituyendo domicilio legal en Gallo 1435 piso 9 de Capital Federal, teléfono 11-3336-0425, ante quien corresponda me presento y respetuosamente digo:\n\nQue vengo a presentarme, designando como único letrado patrocinante al Dr. Agustín Exequiel Simonelli, cuyos datos personales se consignaron anteriormente, otorgándole poder suficiente para realizar todas las gestiones extrajudiciales y administrativas necesarias ante la compañía aseguradora correspondiente, a fin de obtener la indemnización por los daños materiales y/o físicos sufridos.`;
   }
 
   get textoHonorarios(): string {
     const fecha = new Date().toLocaleDateString('es-AR', { day: 'numeric', month: 'long', year: 'numeric' });
-    return `CONVENIO DE HONORARIOS PROFESIONALES\n\nEn la ciudad de Buenos Aires, a los ${fecha}, ENTRE: ${this.v.nombre}, DNI ${this.v.dni || 'A completar'}, en adelante “EL CLIENTE”, por una parte, y el señor AGUSTIN EXEQUIEL SIMONELLI...`;
+    return `CONVENIO DE HONORARIOS PROFESIONALES\n\nEn la ciudad de Buenos Aires, a los ${fecha}, ENTRE: ${this.v.nombre || '...'}, DNI ${this.v.dni || '...'}, en adelante “EL CLIENTE”, por una parte, y el señor AGUSTIN EXEQUIEL SIMONELLI, Tº141 Fº755 C.P.A.C.F, CUIT: 20-36045548-4, por otra, en adelante “EL LETRADO”, se conviene celebrar el presente convenio:\n\nPRIMERO: EL CLIENTE encarga a EL LETRADO y este acepta la labor profesional de letrado patrocinante en el reclamo extrajudicial y/o judicial que iniciará EL CLIENTE por el siniestro denunciado.\n\nSEGUNDO: El honorario básico de los profesionales se conviene en el 20% (VEINTE POR CIENTO) del monto total que por todo concepto se recaude del pleito o gestión. Dicho porcentaje incorpora todo gasto de letrado, cotizaciones, certificados, tasas, aranceles e impuestos.\n\nTERCERO: El pago de honorarios deberá realizarlo EL CLIENTE al LETRADO en efectivo o transferencia bancaria únicamente al momento de percibir el monto que se recaude (Resultado Positivo).`;
   }
 
   get textoNoSeguro(): string {
     const fecha = new Date().toLocaleDateString('es-AR');
-    return `DECLARACIÓN JURADA - INEXISTENCIA DE SEGURO\nBuenos Aires, ${fecha}\n\nPor la presente, yo, ${this.v.nombre}, titular del DNI Nº ${this.v.dni || 'A completar'}, declaro bajo juramento que al momento del siniestro ocurrido el día ${this.v.fecha_hecho || 'A completar'} en ${this.v.lugar_hecho || 'A completar'}, mi vehículo NO poseía cobertura de seguro...`;
+    return `DECLARACIÓN JURADA - INEXISTENCIA DE SEGURO\nBuenos Aires, ${fecha}\n\nPor la presente, yo, ${this.v.nombre || '...'}, titular del DNI Nº ${this.v.dni || '...'}, declaro bajo juramento que al momento del siniestro ocurrido el día ${this.v.fecha_hecho || '...'} en ${this.v.lugar_hecho || '...'}, mi vehículo NO poseía cobertura de seguro vigente por cuestiones ajenas a mi voluntad.\n\nAsimismo, describo los hechos ocurridos de la siguiente manera:\n"${this.v.relato_hecho || 'No especificado'}"`;
   }
 
   // --- VALIDATORS HELPERS ---

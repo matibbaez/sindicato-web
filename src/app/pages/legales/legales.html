@@ -1,52 +1,128 @@
-<div class="legales-container fade-in">
+<div class="min-h-screen bg-[#030712] text-slate-50 font-sans selection:bg-indigo-500/30 pt-28 pb-20 px-6 relative overflow-hidden animate-fade-in">
   
-  <header class="legales-header">
-    <h1>Información Legal</h1>
-    <p>Transparencia y seguridad en cada gestión.</p>
-  </header>
+  <!-- Brillo de fondo ambiental -->
+  <div class="absolute top-12 left-1/2 -translate-x-1/2 w-[600px] h-[350px] bg-indigo-600/15 blur-[140px] rounded-full pointer-events-none"></div>
 
-  <div class="tabs-container">
-    <button class="tab-btn" [class.active]="activeTab === 'terminos'" (click)="setTab('terminos')">
-      Términos y Condiciones
-    </button>
-    <button class="tab-btn" [class.active]="activeTab === 'privacidad'" (click)="setTab('privacidad')">
-      Política de Privacidad
-    </button>
-  </div>
+  <div class="max-w-4xl mx-auto relative z-10">
 
-  <div class="content-box">
-    
-    <div *ngIf="activeTab === 'terminos'" class="text-content fade-in">
-      <h3>Términos del Servicio</h3>
-      <p class="last-update">Última actualización: Enero 2026</p>
+    <!-- ENCABEZADO -->
+    <header class="text-center mb-10">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-bold uppercase tracking-widest mb-4">
+        Marco Normativo
+      </div>
+      <h1 class="text-4xl sm:text-5xl font-extrabold text-white tracking-tight mb-3">Información Legal</h1>
+      <p class="text-slate-400 text-base sm:text-lg max-w-xl mx-auto">Transparencia, respaldo jurídico y seguridad extrajudicial en cada gestión.</p>
+    </header>
 
-      <h4>1. Condiciones Generales</h4>
-      <p>Al solicitar un servicio a través de esta plataforma, aceptas los siguientes términos para la gestión de reclamos de siniestros viales ante compañías de seguros.</p>
-
-      <h4>2. Mandato de Representación</h4>
-      <p>El usuario designa como letrado patrocinante al <strong>Dr. Agustín Exequiel Simonelli</strong> para realizar las gestiones extrajudiciales y administrativas necesarias con el fin de obtener la indemnización correspondiente.</p>
-
-      <h4>3. Convenio de Honorarios</h4>
-      <p>El servicio es a resultado. Se pacta un honorario del <strong>20% (veinte por ciento)</strong> del monto total que se recaude por todo concepto. Dicho porcentaje incluye los gastos del letrado y gestoría. El pago se realiza únicamente si la gestión es exitosa, al momento de cobrar la indemnización.</p>
-
-      <h4>4. Declaración Jurada</h4>
-      <p>El usuario declara bajo juramento que los datos y documentación aportada son reales. En caso de circular sin seguro, se suscribe la correspondiente Declaración Jurada de Inexistencia de Seguro. El falseamiento de datos dará lugar a la rescisión del servicio.</p>
-
-      <h4>5. Propiedad Intelectual</h4>
-      <p>Todos los derechos sobre el diseño y contenido de esta plataforma son reservados.</p>
+    <!-- INTERRUPTOR DE PESTAÑAS (TABS) -->
+    <div class="flex justify-center mb-10">
+      <div class="bg-slate-900/90 p-1.5 rounded-2xl border border-slate-800 inline-flex gap-2 w-full max-w-md shadow-xl backdrop-blur-md">
+        <button type="button" 
+                class="flex-1 py-3 px-4 rounded-xl text-xs sm:text-sm font-bold transition-all duration-300 focus:outline-none text-center"
+                [ngClass]="activeTab === 'terminos' ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30' : 'text-slate-400 hover:text-white hover:bg-white/5'"
+                (click)="setTab('terminos')">
+          Términos y Condiciones
+        </button>
+        <button type="button" 
+                class="flex-1 py-3 px-4 rounded-xl text-xs sm:text-sm font-bold transition-all duration-300 focus:outline-none text-center"
+                [ngClass]="activeTab === 'privacidad' ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30' : 'text-slate-400 hover:text-white hover:bg-white/5'"
+                (click)="setTab('privacidad')">
+          Política de Privacidad
+        </button>
+      </div>
     </div>
 
-    <div *ngIf="activeTab === 'privacidad'" class="text-content fade-in">
-      <h3>Política de Privacidad</h3>
-      <p class="last-update">Protección de Datos Personales</p>
+    <!-- CAJA DE CONTENIDO LEGAL -->
+    <div class="bg-white/[0.02] border border-white/10 rounded-3xl p-6 sm:p-10 md:p-12 backdrop-blur-md shadow-2xl relative overflow-hidden">
+      
+      <!-- PESTAÑA 1: TÉRMINOS Y CONDICIONES -->
+      <div *ngIf="activeTab === 'terminos'" class="space-y-8 animate-fade-in text-slate-300 text-[15px] leading-relaxed">
+        
+        <div class="border-b border-white/10 pb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <h3 class="text-2xl font-bold text-white tracking-tight">Términos del Servicio</h3>
+          <span class="text-xs font-mono text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-3 py-1 rounded-full">Última actualización: Enero 2026</span>
+        </div>
 
-      <h4>1. Uso de la Información</h4>
-      <p>Los datos personales (Nombre, DNI, Domicilio) y la documentación del siniestro se utilizan exclusivamente para la confección de los escritos legales (Carta Poder, Reclamos) y su presentación ante las aseguradoras.</p>
+        <section class="space-y-3">
+          <h4 class="text-base font-bold text-white flex items-center gap-2.5">
+            <span class="w-6 h-6 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xs font-mono">01</span>
+            Condiciones Generales
+          </h4>
+          <p class="pl-8 text-slate-400">Al solicitar un servicio a través de esta plataforma digital, aceptas los siguientes términos vinculantes para la gestión, representación y tramitación de reclamos por siniestros viales ante compañías de seguros.</p>
+        </section>
 
-      <h4>2. Seguridad</h4>
-      <p>Tus datos están protegidos y son tratados con confidencialidad bajo el secreto profesional abogado-cliente.</p>
+        <section class="space-y-3">
+          <h4 class="text-base font-bold text-white flex items-center gap-2.5">
+            <span class="w-6 h-6 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xs font-mono">02</span>
+            Mandato de Representación
+          </h4>
+          <p class="pl-8 text-slate-400">
+            El usuario designa formalmente como letrado patrocinante al <strong class="text-indigo-300 font-semibold bg-indigo-500/10 px-2 py-0.5 rounded border border-indigo-500/20">Dr. Agustín Exequiel Simonelli</strong> para realizar todas las gestiones extrajudiciales, conciliatorias y administrativas necesarias con el fin de obtener la indemnización correspondiente al siniestro declarado.
+          </p>
+        </section>
+
+        <section class="space-y-3">
+          <h4 class="text-base font-bold text-white flex items-center gap-2.5">
+            <span class="w-6 h-6 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xs font-mono">03</span>
+            Convenio de Honorarios
+          </h4>
+          <p class="pl-8 text-slate-400">
+            El servicio profesional se rige estrictamente bajo la modalidad pactada <em class="text-slate-200">a resultado</em>. Se establece un honorario del <strong class="text-emerald-400 font-mono font-bold bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">20% (veinte por ciento)</strong> del monto total que se recaude por todo concepto. Dicho porcentaje incluye los gastos operativos del letrado y gestoría extrajudicial. El pago se exigirá únicamente si la gestión resulta exitosa, percibiéndose en el exacto momento de cobrar la indemnización.
+          </p>
+        </section>
+
+        <section class="space-y-3">
+          <h4 class="text-base font-bold text-white flex items-center gap-2.5">
+            <span class="w-6 h-6 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xs font-mono">04</span>
+            Declaración Jurada y Veracidad
+          </h4>
+          <p class="pl-8 text-slate-400">El usuario declara bajo juramento que todos los datos factuales y la documentación digital aportada son auténticos. En caso de circular sin cobertura vigente, se suscribe en simultáneo la correspondiente Declaración Jurada de Inexistencia de Seguro. El falseamiento, ocultamiento o adulteración de datos dará lugar a la rescisión inmediata del servicio profesional.</p>
+        </section>
+
+        <section class="space-y-3 pt-2">
+          <h4 class="text-base font-bold text-white flex items-center gap-2.5">
+            <span class="w-6 h-6 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xs font-mono">05</span>
+            Propiedad Intelectual
+          </h4>
+          <p class="pl-8 text-slate-400">Todos los derechos sobre la arquitectura, código fuente, flujos de trabajo, logotipos y contenidos de esta plataforma digital se encuentran expresamente reservados.</p>
+        </section>
+
+      </div>
+
+      <!-- PESTAÑA 2: POLÍTICA DE PRIVACIDAD -->
+      <div *ngIf="activeTab === 'privacidad'" class="space-y-8 animate-fade-in text-slate-300 text-[15px] leading-relaxed">
+        
+        <div class="border-b border-white/10 pb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <h3 class="text-2xl font-bold text-white tracking-tight">Política de Privacidad</h3>
+          <span class="text-xs font-mono text-cyan-400 bg-cyan-500/10 border border-cyan-500/20 px-3 py-1 rounded-full">Habeas Data & Confidencialidad</span>
+        </div>
+
+        <section class="space-y-3">
+          <h4 class="text-base font-bold text-white flex items-center gap-2.5">
+            <span class="w-6 h-6 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-xs font-mono">01</span>
+            Uso y Tratamiento de la Información
+          </h4>
+          <p class="pl-8 text-slate-400">Los datos personales recabados (Nombre completo, DNI, Domicilio, Teléfono) y la documentación adjunta del siniestro se utilizan con el propósito exclusivo de confeccionar los instrumentos de representación legal (Carta Poder, Convenios, Reclamos extrajudiciales) y su posterior presentación ante las compañías aseguradoras implicadas.</p>
+        </section>
+
+        <section class="space-y-3">
+          <h4 class="text-base font-bold text-white flex items-center gap-2.5">
+            <span class="w-6 h-6 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-xs font-mono">02</span>
+            Seguridad y Secreto Profesional
+          </h4>
+          <p class="pl-8 text-slate-400">
+            Toda tu información sensible se encuentra resguardada en bases de datos protegidas y es tratada bajo absoluta confidencialidad, amparada por el derecho constitucional del <strong class="text-cyan-300 font-semibold bg-cyan-500/10 px-2 py-0.5 rounded border border-cyan-500/20">secreto profesional abogado-cliente</strong>. Ningún dato será comercializado ni cedido a terceros ajenos a la tramitación de tu expediente.
+          </p>
+        </section>
+
+        <div class="mt-12 bg-slate-900/80 border border-slate-800 p-5 rounded-2xl flex items-center gap-4">
+          <div class="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400 shrink-0">🛡️</div>
+          <p class="text-xs text-slate-400 leading-normal">Cumplimiento irrestricto de la Ley Nacional de Protección de Datos Personales Nº 25.326 de la República Argentina.</p>
+        </div>
+
+      </div>
+
     </div>
 
   </div>
-
 </div>
