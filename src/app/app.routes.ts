@@ -9,7 +9,6 @@ import { ExitoComponent } from './pages/exito/exito';
 import { CuentaPendienteComponent } from './pages/cuenta-pendiente/cuenta-pendiente';
 import { DetalleReclamoComponent } from './pages/dashboard/detalle-reclamo/detalle-reclamo';
 import { LegalesComponent } from './pages/legales/legales';
-import { LandingProductoresComponent } from './pages/landing-productores/landing-productores';
 import { MiPerfilComponent } from './pages/mi-perfil/mi-perfil';
 
 // COMPONENTES DE DASHBOARDS
@@ -93,10 +92,6 @@ export const routes: Routes = [
     path: 'legales', 
     component: LegalesComponent 
   },
-  { 
-    path: 'productores', 
-    component: LandingProductoresComponent 
-  }, 
   { 
     path: 'cuenta-pendiente', 
     component: CuentaPendienteComponent,

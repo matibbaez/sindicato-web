@@ -160,7 +160,7 @@ export class DetalleReclamoComponent implements OnInit {
       { key: 'legal', label: 'Denuncia Penal', sub: 'Judicial' },
       { key: 'complementaria', label: 'Doc. Extra', sub: 'Adicional' },
 
-      { key: 'representacion', label: 'Poder', sub: 'Legal', highlight: true },
+      { key: 'representacion', label: 'Representación Legal', sub: 'Legal', highlight: true },
       { key: 'honorarios', label: 'Honorarios', sub: 'Convenio' }
     ];
 
